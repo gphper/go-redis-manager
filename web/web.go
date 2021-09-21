@@ -43,6 +43,12 @@ func init() {
 			_, ok := items[find]
 			return ok
 		},
+		"equal": func(first string, second string) bool {
+			return first == second
+		},
+		"equalInt": func(first int, second int) bool {
+			return first == second
+		},
 	}
 }
 

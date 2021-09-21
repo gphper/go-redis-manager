@@ -24,27 +24,56 @@
       </span>
     </nav>
 
-
     <div class="col-sm-12" style="margin-top: 10px;">
-      <button type="button" class="btn btn-primary btn-sm">新建连接</button>
+      <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal">
+        新建连接
+      </button>
     </div>
 
     <div class="col-sm-12" style="margin-top: 10px;">
-      <div class="row">
-        <div class="form-group col-md-6">
-          <select id="inputState" class="form-control">
-            <option selected>请选择服务</option>
-          </select>
-        </div>
-
-        <div class="form-group col-md-6">
-          <select id="inputState" class="form-control">
-            <option selected>请选择数据库</option>
-          </select>
-        </div>
+      <div class="alert alert-info" role="alert">
+        当前连接名称： {{.service_name}}
+      </div>
+      <div class="alert alert-info" role="alert">
+        当前DataBase： {{.db}}
       </div>
     </div>
 
+    <form action="/admin/switch" method="post" class="ajaxForm" autocomplete="off">
+    <div class="col-sm-12" style="margin-top: 10px;">
+      <div class="row">
+        <div class="form-group col-md-5">
+          <select id="inputState" name="service" class="form-control">
+            <option value="">请选择连接</option>
+            {{range $k,$v := .services}}
+              {{if equal $k $.service_name}}
+                <option selected value="{{$k}}">{{$k}}</option>
+              {{else}}
+                <option value="{{$k}}">{{$k}}</option>
+              {{end}}
+            {{end}}
+          </select>
+        </div>
+
+        <div class="form-group col-md-4">
+          <select id="inputState" name="db" class="form-control">
+            {{range $k,$v := .db_slice}}
+              {{if equalInt $k $.db}}
+                <option selected value="{{$k}}">{{$k}}</option>
+              {{else}}
+                <option value="{{$k}}">{{$k}}</option>
+              {{end}}
+            {{end}}
+          </select>
+        </div>
+
+        <div class="form-group col-md-3">
+          <button type="submit" class="form-control btn btn-primary">切换</button>
+        </div>
+
+      </div>
+    </div>
+    </form>
 
     <div class="col-sm-12">
 
@@ -94,10 +123,54 @@
     <iframe name="main" scrolling=no id="iframepage"  frameborder=0 width="100%" src=""></iframe>
   </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">新建连接</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action="/admin/save_config" method="post" class="ajaxForm" autocomplete="off">
+      <div class="modal-body">
+          <div class="form-group">
+            <label>连接名称</label>
+            <input type="text" name="service_name" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label>IP地址</label>
+            <input type="text" name="host" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label>端口号</label>
+            <input type="text" name="port" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label>密码</label>
+            <input type="password" name="password" class="form-control">
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+        <button type="submit" class="btn btn-primary">保存</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+
 {{end}}
 
 
 {{define "script"}}
+<script>
+  $('#myModal').on('shown.bs.modal', function () {
+    $('#myInput').trigger('focus')
+  })
+</script>
 <script>
   layui.use(['tree', 'util'], function(){
     var tree = layui.tree
