@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <!-- 必须的 meta 标签 -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap 的 CSS 文件 -->
+    <link rel="stylesheet" href="/statics/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/statics/layui/layui/css/layui.css"  media="all">
+    {{template "head" .}}
+    <style>
+      
+      .layui-tree-icon{
+        box-sizing: content-box !important;
+      }
+
+      .layui-tree-entry{
+        box-sizing: content-box !important;
+      }
+    </style>
+
+    <title>Hello, world!</title>
+  </head>
+  <body style="overflow: hidden;">
+    
+    {{template "body" .}}
+
+
+    <!-- 选项 1：jQuery 和 Bootstrap 集成包（集成了 Popper） -->
+    <script src="/statics/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/statics/layui/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" language="javascript"> 
+    function calcPageHeight(doc) {
+        var cHeight = Math.max(doc.body.clientHeight, doc.documentElement.clientHeight)
+        var sHeight = Math.max(doc.body.scrollHeight, doc.documentElement.scrollHeight)
+        var height  = Math.max(cHeight, sHeight)
+        return height
+    }
+    window.onload = function() {
+        var height = calcPageHeight(document)
+        parent.document.getElementById('iframepage').style.height = height + 'px'
+    }
+
+    </script>
+    {{template "script" .}}
+  
+  </body>
+
+</html>
