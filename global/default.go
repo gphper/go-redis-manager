@@ -5,7 +5,9 @@
  */
 package global
 
-import "github.com/go-redis/redis/v8"
+import (
+	"github.com/go-redis/redis/v8"
+)
 
 var RedisServiceStorage map[string]RedisService
 
@@ -25,4 +27,26 @@ type RedisService struct {
 
 func init() {
 	RedisServiceStorage = make(map[string]RedisService)
+
+	optionConfig := &redis.Options{
+		Addr:     "127.0.0.1:6379",
+		Password: "",
+		DB:       0,
+	}
+
+	client := redis.NewClient(optionConfig)
+
+	RsSlice := RedisService{
+		RedisService: "本地连接",
+		Config:       optionConfig,
+		Client:       client,
+	}
+
+	RedisServiceStorage["本地连接"] = RsSlice
+
+	//设置全局参数
+	UseClient.ConnectName = "本地连接"
+	UseClient.Db = 0
+	UseClient.Client = client
+
 }

@@ -20,6 +20,7 @@ func Init() *gin.Engine {
 	admin.GET("/index", controllers.Ic.Show)
 	admin.POST("/save_config", controllers.Ic.SaveConfig)
 	admin.POST("/switch", controllers.Ic.Switch)
+	admin.POST("/search_key", controllers.Ic.SearchKey)
 
 	return router
 }

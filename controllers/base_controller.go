@@ -15,6 +15,9 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
+const AJAXSUCCESS int = 1
+const AJAXFAIL int = 0
+
 type BaseController struct {
 }
 
@@ -31,6 +34,14 @@ func (Base *BaseController) Error(c *gin.Context, message string) {
 	c.JSON(http.StatusOK, gin.H{
 		"status": false,
 		"msg":    message,
+	})
+}
+
+func (Base *BaseController) AjaxReturn(c *gin.Context, code int, obj interface{}) {
+
+	c.JSON(http.StatusOK, gin.H{
+		"status": code,
+		"data":   obj,
 	})
 }
 

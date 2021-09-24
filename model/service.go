@@ -16,3 +16,7 @@ type ServiceSwitchReq struct {
 	Service string `form:"service" label:"连接名称" json:"service" binding:"required"`
 	Db      int    `form:"db" label:"数据库名" json:"db" binding:"required"`
 }
+
+type RedisKeyReq struct {
+	Key string `form:"key" label:"key值" json:"key" binding:"required"`
+}

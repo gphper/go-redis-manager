@@ -7,7 +7,9 @@ package controllers
 
 import (
 	"net/http"
+	"strings"
 
+	"goredismanager/comment"
 	"goredismanager/global"
 	"goredismanager/model"
 	"goredismanager/service"
@@ -70,4 +72,36 @@ func (con *indexController) Switch(c *gin.Context) {
 	}
 
 	con.Success(c, "", "切换连接成功")
+}
+
+func (con *indexController) SearchKey(c *gin.Context) {
+
+	var (
+		err    error
+		req    model.RedisKeyReq
+		result string
+	)
+
+	err = con.FormBind(c, &req)
+	if err != nil {
+		con.Error(c, err.Error())
+		return
+	}
+
+	result, err = service.SearchKeyType(req)
+	if err != nil || result == "none" {
+		con.AjaxReturn(c, AJAXFAIL, "当前key值不存在")
+		return
+	}
+
+	req.Key += "_" + result
+
+	stringSlice := strings.Split(req.Key, ":")
+
+	gen := comment.NewTrie()
+	gen.Insert(stringSlice)
+
+	resultSlice := comment.GetOne(gen.Root)
+
+	con.AjaxReturn(c, AJAXSUCCESS, resultSlice)
 }

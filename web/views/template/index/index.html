@@ -77,17 +77,19 @@
 
     <div class="col-sm-12">
 
+    <form action="/admin/search_key" method="post" id="search_key">  
       <div class="btn-toolbar mb-12" role="toolbar" aria-label="Toolbar with button groups">
         <div class="input-group">
           <div class="input-group-prepend">
             <div class="input-group-text" id="btnGroupAddon">查看指定key</div>
           </div>
-          <input type="text" class="form-control" placeholder="" >
+          <input type="text" name="key" class="form-control" placeholder="" >
         </div>
         <div class="input-group">
-          <button type="button" class="form-control btn btn-primary" >搜索</button>
+          <button type="submit" class="form-control btn btn-primary" >搜索</button>
         </div>
       </div>
+    </form>
       
     </div>
 
@@ -113,10 +115,8 @@
     
 
     <div class="col-sm-12" style="margin-top: 15px;">
-      <div id="test5" class="demo-tree"></div>
+      <div id="keys" class="demo-tree"></div>
     </div>
-
-    
 
   </div>
   <div class="col-sm-8" style="padding-left: 0px;">
@@ -167,60 +167,56 @@
 
 {{define "script"}}
 <script>
+
   $('#myModal').on('shown.bs.modal', function () {
     $('#myInput').trigger('focus')
   })
-</script>
-<script>
-  layui.use(['tree', 'util'], function(){
-    var tree = layui.tree
-    ,layer = layui.layer
-    ,util = layui.util
-    
-    //模拟数据
-    ,data = [{
-      title: '一级1'
-      ,id: 1
-      ,field: 'name1'
-      ,checked: true
-      ,children: [{
-        title: '二级1-1 可允许跳转'
-        ,id: 3
-        ,field: 'name11'
-        ,href: 'https://www.layui.com/'
-        ,children: [{
-          title: '三级1-1-2'
-          ,id: 8
-          ,field: ''
-          ,children: [{
-            title: '四级1-1-2-1'
-            ,id: 32
-            ,field: ''
-            ,children:[{
-              title: '五级1-1-2-1'
-              ,id: 32
-              ,field: ''
-              ,children:[{
-                  title: '六级1-1-2-1'
-                  ,id: 32
-                  ,field: ''
-              }]
-            }]
-          }]
-        }]
-      }]
-  
-    }]
-    
-    
-    //点击节点新窗口跳转
-    tree.render({
-      elem: '#test5'
-      ,data: data
-      ,isJump: true  //link 为参数匹配
+
+
+  var formloading = false;
+    $('#search_key').submit(function () {
+        $(this).find('.help-block').remove();
+        $(this).find('.has-error').removeClass('has-error');
+
+        if (formloading) {
+            return false;
+        }
+
+        var loading = layer.msg('系统处理中...', {icon: 16, shade: 0, time: 0});
+        $.ajax({
+            type: $(this).prop('method'),
+            url: $(this).prop('action'),
+            data: $(this).serialize(),
+            dataType: 'json',
+            beforeSend: function () {
+                formloading = true;
+            },
+            success: function (data){
+                if (data.status) {
+                  layui.use('tree', function () {
+                    var tree = layui.tree;
+                    tree.render({
+                        elem: '#keys',
+                        contentType: 'application/json',
+                        data: data.data
+                    })
+                  })
+                } else {
+                    layer.msg(data.data, {icon: 5, scrollbar: false, time: 2000, shade: [0.3, '#393D49']});
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                
+            },
+            complete: function () {
+                formloading = false;
+                layer.close(loading);
+            }
+        });
+        return false;
     });
-   
-    
-  });
-  </script>
+
+
+</script>
+
 {{end}}

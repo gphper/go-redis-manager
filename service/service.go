@@ -61,3 +61,27 @@ func ServiceSwitch(conf model.ServiceSwitchReq) (err error) {
 
 	return nil
 }
+
+func SearchKeyType(conf model.RedisKeyReq) (keyType string, err error) {
+
+	ctx := context.Background()
+
+	keyType, err = global.UseClient.Client.Type(ctx, conf.Key).Result()
+	if err != nil {
+		return "", err
+	}
+
+	// switch keyType {
+
+	// case "string":
+	// 	result, err = global.UseClient.Client.Get(ctx, conf.Key).Result()
+	// case "list":
+	// 	len, _ := global.UseClient.Client.LLen(ctx, conf.Key).Result()
+	// 	result, err = global.UseClient.Client.LRange(ctx, conf.Key, 0, len).Result()
+	// case "set":
+	// 	result, err = global.UseClient.Client.SMembers(ctx, conf.Key).Result()
+	// case "zset":
+	// 	result, err = global.UseClient.Client.ZRangeWithScores(ctx, conf.Key, 0, -1).Result()
+	// }
+	return
+}
