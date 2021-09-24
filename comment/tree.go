@@ -5,6 +5,10 @@
  */
 package comment
 
+import (
+	"strings"
+)
+
 // 字典树节点
 type TrieNode struct {
 	children map[string]*TrieNode
@@ -41,6 +45,7 @@ func (trie *Trie) Insert(word []string) {
 
 type Node struct {
 	Title    string `json:"title"`
+	Type     string `json:"type"`
 	Children []Node `json:"children"`
 }
 
@@ -50,8 +55,13 @@ func GetOne(node *TrieNode) []Node {
 	for k, _ := range node.children {
 
 		var tmp []Node
-		if node.children[k].isEnd && len(node.children[k].children) != 0 {
-			tmp = []Node{Node{Title: k}}
+		if node.children[k].isEnd {
+
+			if strings.Contains(k, "_") {
+				kTypeSlice := strings.Split(k, "_")
+				tmp = []Node{Node{Title: kTypeSlice[0], Type: kTypeSlice[1]}}
+			}
+
 			tmp = append(tmp, GetRepeat(node.children[k], k)...)
 		} else {
 			tmp = []Node{Node{
@@ -70,9 +80,18 @@ func GetRepeat(node *TrieNode, pre string) []Node {
 
 	slice := make([]Node, 0)
 	for k, v := range node.children {
-		pre += ":" + k
 
-		slice = append(slice, Node{Title: pre})
+		var tempNode Node
+		if strings.Contains(k, "_") {
+			kTypeSlice := strings.Split(k, "_")
+			pre += ":" + kTypeSlice[0]
+			tempNode = Node{Title: pre, Type: kTypeSlice[1]}
+		} else {
+			pre += ":" + k
+			tempNode = Node{Title: pre}
+		}
+
+		slice = append(slice, tempNode)
 
 		tmpSlice := GetRepeat(v, pre)
 

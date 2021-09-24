@@ -198,7 +198,11 @@
                     tree.render({
                         elem: '#keys',
                         contentType: 'application/json',
-                        data: data.data
+                        data: data.data,
+                        click: function(obj){
+                            var data = obj.data;  //获取当前点击的节点数据
+                            layer.msg('状态：'+ obj.state + '<br>节点数据：' + JSON.stringify(data));
+                        }
                     })
                   })
                 } else {
