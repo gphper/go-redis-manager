@@ -22,5 +22,9 @@ func Init() *gin.Engine {
 	admin.POST("/switch", controllers.Ic.Switch)
 	admin.POST("/search_key", controllers.Ic.SearchKey)
 
+	admin.GET("/show/string", controllers.Ic.StringShow)
+	admin.GET("/show/list", controllers.Ic.ListShow)
+	admin.GET("/show/set", controllers.Ic.ListShow)
+
 	return router
 }

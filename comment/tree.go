@@ -46,10 +46,11 @@ func (trie *Trie) Insert(word []string) {
 type Node struct {
 	Title    string `json:"title"`
 	Type     string `json:"type"`
+	All      string `json:"all"`
 	Children []Node `json:"children"`
 }
 
-func GetOne(node *TrieNode) []Node {
+func GetOne(node *TrieNode, allpre string) []Node {
 	slice := make([]Node, 0)
 
 	for k, _ := range node.children {
@@ -59,14 +60,20 @@ func GetOne(node *TrieNode) []Node {
 
 			if strings.Contains(k, "_") {
 				kTypeSlice := strings.Split(k, "_")
-				tmp = []Node{Node{Title: kTypeSlice[0], Type: kTypeSlice[1]}}
+				tmp = []Node{Node{Title: kTypeSlice[0], Type: kTypeSlice[1], All: allpre + ":" + kTypeSlice[0]}}
 			}
 
-			tmp = append(tmp, GetRepeat(node.children[k], k)...)
+			tmp = append(tmp, GetRepeat(node.children[k], k, allpre)...)
 		} else {
+			var qian string
+			if allpre != "" {
+				qian = allpre + ":" + k
+			} else {
+				qian = k
+			}
 			tmp = []Node{Node{
 				Title:    k,
-				Children: GetOne(node.children[k]),
+				Children: GetOne(node.children[k], qian),
 			}}
 		}
 
@@ -76,7 +83,7 @@ func GetOne(node *TrieNode) []Node {
 	return slice
 }
 
-func GetRepeat(node *TrieNode, pre string) []Node {
+func GetRepeat(node *TrieNode, pre string, allpre string) []Node {
 
 	slice := make([]Node, 0)
 	for k, v := range node.children {
@@ -85,7 +92,7 @@ func GetRepeat(node *TrieNode, pre string) []Node {
 		if strings.Contains(k, "_") {
 			kTypeSlice := strings.Split(k, "_")
 			pre += ":" + kTypeSlice[0]
-			tempNode = Node{Title: pre, Type: kTypeSlice[1]}
+			tempNode = Node{Title: pre, Type: kTypeSlice[1], All: allpre + ":" + k}
 		} else {
 			pre += ":" + k
 			tempNode = Node{Title: pre}
@@ -93,7 +100,7 @@ func GetRepeat(node *TrieNode, pre string) []Node {
 
 		slice = append(slice, tempNode)
 
-		tmpSlice := GetRepeat(v, pre)
+		tmpSlice := GetRepeat(v, pre, allpre)
 
 		if len(tmpSlice) > 0 {
 			slice = append(slice, tmpSlice...)

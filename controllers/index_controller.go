@@ -101,7 +101,29 @@ func (con *indexController) SearchKey(c *gin.Context) {
 	gen := comment.NewTrie()
 	gen.Insert(stringSlice)
 
-	resultSlice := comment.GetOne(gen.Root)
+	// g := comment.NewTrie()
+	// g.Insert([]string{"hello", "hello1", "hello2", "hello3_string"})
+	// g.Insert([]string{"hello", "hello1", "hello2", "hello33_string"})
+	// g.Insert([]string{"hello", "hello1", "hello22", "hello333_string"})
+	// g.Insert([]string{"hello", "hello1", "hello22_string"})
+
+	// json.NewEncoder(os.Stdout).Encode()
+	// fmt.Println(comment.GetOne(g.Root, ""))
+
+	resultSlice := comment.GetOne(gen.Root, "")
+	// resultSlice := comment.GetOne(g.Root, "")
 
 	con.AjaxReturn(c, AJAXSUCCESS, resultSlice)
+}
+
+func (con *indexController) StringShow(c *gin.Context) {
+
+}
+
+func (con *indexController) ListShow(c *gin.Context) {
+
+}
+
+func (con *indexController) SetShow(c *gin.Context) {
+
 }

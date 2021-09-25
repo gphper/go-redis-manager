@@ -14,7 +14,7 @@
 
 {{define "body"}}
 <div class="row">
-  <div class="col-sm-4" style="padding-right: 0px;">
+  <div class="col-sm-5" style="padding-right: 0px;">
     <!-- <a href="https://www.cnblogs.com/" target="main">连接1</a>
     <a href="https://gitee.com/yinqi" target="main">连接2</a> -->
     <!-- 标题模块 -->
@@ -119,7 +119,7 @@
     </div>
 
   </div>
-  <div class="col-sm-8" style="padding-left: 0px;">
+  <div class="col-sm-7" style="padding-left: 0px;">
     <iframe name="main" scrolling=no id="iframepage"  frameborder=0 width="100%" src=""></iframe>
   </div>
 </div>
@@ -201,7 +201,10 @@
                         data: data.data,
                         click: function(obj){
                             var data = obj.data;  //获取当前点击的节点数据
-                            layer.msg('状态：'+ obj.state + '<br>节点数据：' + JSON.stringify(data));
+                            if (data.children == null){
+                              document.getElementById("iframepage").src='/admin/show/'+data.type+'?key='+data.all; 
+                            }
+ 
                         }
                     })
                   })
