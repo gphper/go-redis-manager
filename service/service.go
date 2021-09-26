@@ -62,26 +62,43 @@ func ServiceSwitch(conf model.ServiceSwitchReq) (err error) {
 	return nil
 }
 
-func SearchKeyType(conf model.RedisKeyReq) (keyType string, err error) {
+func SearchKeyType(conf model.RedisKeyReq) (keys []model.RedisKey, err error) {
 
 	ctx := context.Background()
 
-	keyType, err = global.UseClient.Client.Type(ctx, conf.Key).Result()
-	if err != nil {
-		return "", err
+	if conf.SearchType == 1 {
+		//查询指定值
+		var keyType string
+
+		keyType, err = global.UseClient.Client.Type(ctx, conf.SearchKey).Result()
+		keys = append(keys, model.RedisKey{
+			Key:  conf.SearchKey,
+			Type: keyType,
+		})
+
+	} else {
+		//模糊匹配
+		var cursor uint64
+		var tmpKeys []string
+
+		for {
+
+			tmpKeys, cursor, err = global.UseClient.Client.Scan(ctx, cursor, conf.SearchKey, 100).Result()
+
+			for _, tmpKey := range tmpKeys {
+				kryType, _ := global.UseClient.Client.Type(ctx, tmpKey).Result()
+				keys = append(keys, model.RedisKey{
+					Key:  tmpKey,
+					Type: kryType,
+				})
+			}
+
+			if cursor == 0 {
+				break
+			}
+
+		}
+
 	}
-
-	// switch keyType {
-
-	// case "string":
-	// 	result, err = global.UseClient.Client.Get(ctx, conf.Key).Result()
-	// case "list":
-	// 	len, _ := global.UseClient.Client.LLen(ctx, conf.Key).Result()
-	// 	result, err = global.UseClient.Client.LRange(ctx, conf.Key, 0, len).Result()
-	// case "set":
-	// 	result, err = global.UseClient.Client.SMembers(ctx, conf.Key).Result()
-	// case "zset":
-	// 	result, err = global.UseClient.Client.ZRangeWithScores(ctx, conf.Key, 0, -1).Result()
-	// }
 	return
 }

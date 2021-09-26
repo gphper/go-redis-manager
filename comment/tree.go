@@ -59,8 +59,16 @@ func GetOne(node *TrieNode, allpre string) []Node {
 		if node.children[k].isEnd {
 
 			if strings.Contains(k, "_") {
+
+				var qian string
+
 				kTypeSlice := strings.Split(k, "_")
-				tmp = []Node{Node{Title: kTypeSlice[0], Type: kTypeSlice[1], All: allpre + ":" + kTypeSlice[0]}}
+				if allpre != "" {
+					qian = allpre + ":" + kTypeSlice[0]
+				} else {
+					qian = kTypeSlice[0]
+				}
+				tmp = []Node{Node{Title: kTypeSlice[0], Type: kTypeSlice[1], All: qian}}
 			}
 
 			tmp = append(tmp, GetRepeat(node.children[k], k, allpre)...)

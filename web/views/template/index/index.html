@@ -14,7 +14,7 @@
 
 {{define "body"}}
 <div class="row">
-  <div class="col-sm-5" style="padding-right: 0px;">
+  <div class="col-sm-5" style="padding-right: 0px;border-right: 3px solid rgb(217 217 217);">
     <!-- <a href="https://www.cnblogs.com/" target="main">连接1</a>
     <a href="https://gitee.com/yinqi" target="main">连接2</a> -->
     <!-- 标题模块 -->
@@ -30,14 +30,14 @@
       </button>
     </div>
 
-    <div class="col-sm-12" style="margin-top: 10px;">
+    <!-- <div class="col-sm-12" style="margin-top: 10px;">
       <div class="alert alert-info" role="alert">
         当前连接名称： {{.service_name}}
       </div>
       <div class="alert alert-info" role="alert">
         当前DataBase： {{.db}}
       </div>
-    </div>
+    </div> -->
 
     <form action="/admin/switch" method="post" class="ajaxForm" autocomplete="off">
     <div class="col-sm-12" style="margin-top: 10px;">
@@ -77,13 +77,14 @@
 
     <div class="col-sm-12">
 
-    <form action="/admin/search_key" method="post" id="search_key">  
+    <form action="/admin/search_key" method="post" class="search_key">  
       <div class="btn-toolbar mb-12" role="toolbar" aria-label="Toolbar with button groups">
         <div class="input-group">
           <div class="input-group-prepend">
             <div class="input-group-text" id="btnGroupAddon">查看指定key</div>
           </div>
-          <input type="text" name="key" class="form-control" placeholder="" >
+          <input type="text" name="key" class="form-control" placeholder="" autocomplete="off">
+          <input type="hidden" name="type" value="1">
         </div>
         <div class="input-group">
           <button type="submit" class="form-control btn btn-primary" >搜索</button>
@@ -95,18 +96,20 @@
 
     <div class="col-sm-12" style="margin-top: 10px;">
 
+      <form action="/admin/search_key" method="post" class="search_key">
       <div class="btn-toolbar mb-12" role="toolbar" aria-label="Toolbar with button groups">
         <div class="input-group">
           <div class="input-group-prepend">
             <div class="input-group-text" id="btnGroupAddon">筛选key前缀</div>
           </div>
-          <input type="text" class="form-control" placeholder="" >
+          <input type="text" class="form-control" name="key" placeholder="" autocomplete="off">
+          <input type="hidden" name="type" value="2">
         </div>
         <div class="input-group">
-          <button type="button" class="form-control btn btn-primary" >搜索</button>
+          <button type="submit" class="form-control btn btn-primary" >搜索</button>
         </div>
       </div>
-      
+      </form>
     </div>
 
     <div class="col-sm-12" style="margin-top: 10px;">
@@ -114,7 +117,7 @@
     </div>
     
 
-    <div class="col-sm-12" style="margin-top: 15px;">
+    <div class="col-sm-12" style="margin-top: 15px;overflow-y: auto;height: 220px;">
       <div id="keys" class="demo-tree"></div>
     </div>
 
@@ -174,7 +177,7 @@
 
 
   var formloading = false;
-    $('#search_key').submit(function () {
+    $('.search_key').submit(function () {
         $(this).find('.help-block').remove();
         $(this).find('.has-error').removeClass('has-error');
 

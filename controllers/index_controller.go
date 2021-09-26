@@ -6,6 +6,7 @@
 package controllers
 
 import (
+	"context"
 	"net/http"
 	"strings"
 
@@ -63,6 +64,7 @@ func (con *indexController) Switch(c *gin.Context) {
 	err = con.FormBind(c, &serReq)
 	if err != nil {
 		con.Error(c, err.Error())
+		return
 	}
 
 	err = service.ServiceSwitch(serReq)
@@ -79,7 +81,7 @@ func (con *indexController) SearchKey(c *gin.Context) {
 	var (
 		err    error
 		req    model.RedisKeyReq
-		result string
+		result []model.RedisKey
 	)
 
 	err = con.FormBind(c, &req)
@@ -89,35 +91,39 @@ func (con *indexController) SearchKey(c *gin.Context) {
 	}
 
 	result, err = service.SearchKeyType(req)
-	if err != nil || result == "none" {
-		con.AjaxReturn(c, AJAXFAIL, "当前key值不存在")
-		return
-	}
-
-	req.Key += "_" + result
-
-	stringSlice := strings.Split(req.Key, ":")
 
 	gen := comment.NewTrie()
-	gen.Insert(stringSlice)
 
-	// g := comment.NewTrie()
-	// g.Insert([]string{"hello", "hello1", "hello2", "hello3_string"})
-	// g.Insert([]string{"hello", "hello1", "hello2", "hello33_string"})
-	// g.Insert([]string{"hello", "hello1", "hello22", "hello333_string"})
-	// g.Insert([]string{"hello", "hello1", "hello22_string"})
+	for _, v := range result {
 
-	// json.NewEncoder(os.Stdout).Encode()
-	// fmt.Println(comment.GetOne(g.Root, ""))
+		if v.Type == "none" {
+			con.AjaxReturn(c, AJAXFAIL, "Key值不存在")
+			return
+		}
+
+		v.Key += "_" + v.Type
+
+		stringSlice := strings.Split(v.Key, ":")
+
+		gen.Insert(stringSlice)
+
+	}
 
 	resultSlice := comment.GetOne(gen.Root, "")
-	// resultSlice := comment.GetOne(g.Root, "")
 
 	con.AjaxReturn(c, AJAXSUCCESS, resultSlice)
 }
 
 func (con *indexController) StringShow(c *gin.Context) {
+	key := c.Query("key")
 
+	ctx := context.Background()
+	value, _ := global.UseClient.Client.Get(ctx, key).Result()
+
+	c.HTML(http.StatusOK, "show/string.html", gin.H{
+		"key":   key,
+		"value": value,
+	})
 }
 
 func (con *indexController) ListShow(c *gin.Context) {
