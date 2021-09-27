@@ -6,7 +6,7 @@
 {{define "body"}}
 <div class="container" style="margin-top: 10px;">
 <div class="row">
-    <div class="col-sm-12">
+    <div class="col-sm-8">
         <div role="toolbar" aria-label="Toolbar with button groups">
             <div class="input-group">
                   <div class="input-group-prepend">
@@ -14,18 +14,57 @@
                   </div>
                   <input type="text" name="key" class="form-control" value="{{.key}}" disabled>
             </div>
-            <!-- <div class="input-group">
-                  <button type="submit" class="form-control btn btn-primary" >搜索</button>
-            </div> -->
         </div>
     </div>
+
+    <div class="col-sm-4" data-toggle="modal" data-target="#exampleModal">
+        <div role="toolbar" aria-label="Toolbar with button groups">
+            <div class="input-group">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text" id="btnGroupAddon">TTL:</div>
+                  </div>
+                  <input type="text" name="key" class="form-control" value="{{.time}}" disabled>
+            </div>
+        </div>
+    </div>
+
     <div class="col-sm-12" style="margin-top: 10px;">
         <div class="form-group">
             <textarea style="resize:none;" class="form-control" id="exampleFormControlTextarea1" rows="3">{{.value}}</textarea>
           </div>
     </div>
 </div>
-</div>   
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">设置键的TTL</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="/admin/string/ttl" method="post" class="ajaxForm" autocomplete="off">
+        <div class="modal-body">
+            <div class="form-group">
+              <label>新的TTL(-1 表示永不过期)</label>
+              <input type="text" name="ttl" class="form-control" required>
+              <input type="hidden" name="key" value="{{.key}}">
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+          <button type="submit" class="btn btn-primary">保存</button>
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>
+
+
 {{end}}
 
 

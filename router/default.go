@@ -22,9 +22,21 @@ func Init() *gin.Engine {
 	admin.POST("/switch", controllers.Ic.Switch)
 	admin.POST("/search_key", controllers.Ic.SearchKey)
 
-	admin.GET("/show/string", controllers.Ic.StringShow)
-	admin.GET("/show/list", controllers.Ic.ListShow)
-	admin.GET("/show/set", controllers.Ic.ListShow)
+	string_admin := admin.Group("/string")
+	{
+		string_admin.GET("/show", controllers.Sc.Show)
+		string_admin.POST("/ttl", controllers.Sc.Ttl)
+	}
+
+	list_admin := admin.Group("/list")
+	{
+		list_admin.GET("/show", controllers.Lc.Show)
+	}
+
+	set_admin := admin.Group("/set")
+	{
+		set_admin.GET("/show", controllers.Setc.Show)
+	}
 
 	return router
 }

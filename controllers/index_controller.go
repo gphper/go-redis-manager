@@ -90,7 +90,7 @@ func (con *indexController) SearchKey(c *gin.Context) {
 		return
 	}
 
-	result, err = service.SearchKeyType(req)
+	result, _ = service.SearchKeyType(req)
 
 	gen := comment.NewTrie()
 

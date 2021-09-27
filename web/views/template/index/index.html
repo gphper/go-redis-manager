@@ -67,7 +67,7 @@
           </select>
         </div>
 
-        <div class="form-group col-md-3">
+        <div class="form-group col-md-2">
           <button type="submit" class="form-control btn btn-primary">切换</button>
         </div>
 
@@ -205,7 +205,7 @@
                         click: function(obj){
                             var data = obj.data;  //获取当前点击的节点数据
                             if (data.children == null){
-                              document.getElementById("iframepage").src='/admin/show/'+data.type+'?key='+data.all; 
+                              document.getElementById("iframepage").src='/admin/'+data.type+'/show/'+'?key='+data.all; 
                             }
  
                         }
