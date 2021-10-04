@@ -117,7 +117,7 @@
     </div>
     
 
-    <div class="col-sm-12" style="margin-top: 15px;overflow-y: auto;height: 220px;">
+    <div class="col-sm-12" style="margin-top: 15px;overflow-y: auto;height: 300px;">
       <div id="keys" class="demo-tree"></div>
     </div>
 
@@ -202,12 +202,16 @@
                         elem: '#keys',
                         contentType: 'application/json',
                         data: data.data,
+                        customOperate:true,
+                        edit: ['add', 'del'],
                         click: function(obj){
                             var data = obj.data;  //获取当前点击的节点数据
                             if (data.children == null){
                               document.getElementById("iframepage").src='/admin/'+data.type+'/show/'+'?key='+data.all; 
                             }
- 
+                        },
+                        operate:function(obj){
+                          console.log(obj)
                         }
                     })
                   })

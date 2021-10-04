@@ -6,6 +6,7 @@
 package comment
 
 import (
+	"sort"
 	"strings"
 )
 
@@ -40,6 +41,7 @@ func (trie *Trie) Insert(word []string) {
 		}
 		node = node.children[word[i]]
 	}
+
 	node.isEnd = true
 }
 
@@ -81,6 +83,7 @@ func GetOne(node *TrieNode, allpre string) []Node {
 			}
 			tmp = []Node{Node{
 				Title:    k,
+				All:      qian,
 				Children: GetOne(node.children[k], qian),
 			}}
 		}
@@ -88,6 +91,11 @@ func GetOne(node *TrieNode, allpre string) []Node {
 		slice = append(slice, tmp...)
 
 	}
+
+	sort.Slice(slice, func(i, j int) bool {
+		return slice[i].Title > slice[j].Title
+	})
+
 	return slice
 }
 

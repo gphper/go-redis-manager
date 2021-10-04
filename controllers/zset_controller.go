@@ -7,43 +7,49 @@ package controllers
 
 import (
 	"context"
+	"fmt"
 	"goredismanager/global"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
-type setController struct {
+type zsetController struct {
 	BaseController
 }
 
-var Setc = setController{}
+var Zsetc = zsetController{}
 
-func (con *setController) Show(c *gin.Context) {
+/**
+* 展示列表
+ */
+func (con *zsetController) Show(c *gin.Context) {
 	key := c.Query("key")
 
 	ctx := context.Background()
-	value, _ := global.UseClient.Client.SMembers(ctx, key).Result()
 
 	time, _ := global.UseClient.Client.TTL(ctx, key).Result()
 
-	c.HTML(http.StatusOK, "show/set.html", gin.H{
-		"key":   key,
-		"value": value,
-		"time":  time.Seconds(),
+	zvalue, _ := global.UseClient.Client.ZRangeWithScores(ctx, key, 0, -1).Result()
+	fmt.Printf("%+v", zvalue)
+
+	c.HTML(http.StatusOK, "show/zset.html", gin.H{
+		"key":    key,
+		"zvalue": zvalue,
+		"time":   time.Seconds(),
 	})
 }
 
 /**
 * 删除特定值
-**/
-func (con *setController) Del(c *gin.Context) {
+ */
+func (con *zsetController) Del(c *gin.Context) {
 	key := c.PostForm("key")
 	member := c.PostForm("member")
 	ctx := context.Background()
 
-	res, _ := global.UseClient.Client.SRem(ctx, key, member).Result()
-
+	res, _ := global.UseClient.Client.ZRem(ctx, key, member).Result()
+	fmt.Println(res)
 	if res > 0 {
 		con.Success(c, "", "删除成功")
 	} else {

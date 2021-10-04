@@ -31,11 +31,25 @@ func Init() *gin.Engine {
 	list_admin := admin.Group("/list")
 	{
 		list_admin.GET("/show", controllers.Lc.Show)
+		list_admin.POST("/del", controllers.Lc.Del)
 	}
 
 	set_admin := admin.Group("/set")
 	{
 		set_admin.GET("/show", controllers.Setc.Show)
+		set_admin.POST("/del", controllers.Setc.Del)
+	}
+
+	zset_admin := admin.Group("/zset")
+	{
+		zset_admin.GET("/show", controllers.Zsetc.Show)
+		zset_admin.POST("/del", controllers.Zsetc.Del)
+	}
+
+	hash_admin := admin.Group("/hash")
+	{
+		hash_admin.GET("/show", controllers.Hashc.Show)
+		hash_admin.POST("/del", controllers.Hashc.Del)
 	}
 
 	return router

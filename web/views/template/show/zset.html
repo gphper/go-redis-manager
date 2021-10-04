@@ -15,7 +15,7 @@
         <div role="toolbar" aria-label="Toolbar with button groups">
             <div class="input-group">
                   <div class="input-group-prepend">
-                    <div class="input-group-text" id="btnGroupAddon">STRING:</div>
+                    <div class="input-group-text" id="btnGroupAddon">ZSET:</div>
                   </div>
                   <input type="text" name="key" class="form-control" value="{{.key}}" disabled>
             </div>
@@ -33,18 +33,39 @@
         </div>
     </div>
 
-
     <div class="col-sm-12" style="margin-top: 10px;">
       <form action="/admin/string/ttl" method="post" class="ajaxForm" autocomplete="off">
-        <button type="submit" class="btn btn-primary">保存</button>
+        <button type="submit" class="btn btn-primary">添加</button>
       </form>
     </div>
-
-
-    <div class="col-sm-12" style="margin-top: 10px;">
-        <div class="form-group">
-            <textarea style="resize:none;" class="form-control" id="exampleFormControlTextarea1" rows="3">{{.value}}</textarea>
-          </div>
+    <div class="col-sm-12" style="overflow-y: auto;height: 500px;margin-top: 10px;">
+      <table class="table">
+        <thead class="thead-light">
+          <tr>
+            <th scope="col">序号</th>
+            <th scope="col">值</th>
+            <th scope="col">分数</th>
+            <th scope="col">操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{range $i,$v := .zvalue}}
+          <tr>
+            <td>{{$i}}</td>
+            <td>{{$v.Member}}</td>
+            <td>{{$v.Score}}</td>
+            <td>
+              <form action="/admin/zset/del" method="post" class="ajaxForm" autocomplete="off">
+                <input type="hidden" name="key" value="{{$.key}}">
+                <input type="hidden" name="member" value="{{$v.Member}}">
+                <button type="submit" class="btn btn-sm btn-danger">删除</button>
+              </form>
+            </td>
+          </tr>
+          {{end}}
+          
+        </tbody>
+      </table>
     </div>
 </div>
 </div>

@@ -6,7 +6,6 @@
 package controllers
 
 import (
-	"context"
 	"net/http"
 	"strings"
 
@@ -112,24 +111,4 @@ func (con *indexController) SearchKey(c *gin.Context) {
 	resultSlice := comment.GetOne(gen.Root, "")
 
 	con.AjaxReturn(c, AJAXSUCCESS, resultSlice)
-}
-
-func (con *indexController) StringShow(c *gin.Context) {
-	key := c.Query("key")
-
-	ctx := context.Background()
-	value, _ := global.UseClient.Client.Get(ctx, key).Result()
-
-	c.HTML(http.StatusOK, "show/string.html", gin.H{
-		"key":   key,
-		"value": value,
-	})
-}
-
-func (con *indexController) ListShow(c *gin.Context) {
-
-}
-
-func (con *indexController) SetShow(c *gin.Context) {
-
 }

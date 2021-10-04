@@ -44,10 +44,10 @@ func (con *stringController) Ttl(c *gin.Context) {
 	key := c.PostForm("key")
 	ctx := context.Background()
 
-	ttl_int, _ := strconv.Atoi(ttl)
-	time := time.Duration(ttl_int) * time.Second
+	ttlInt, _ := strconv.Atoi(ttl)
+	time := time.Duration(ttlInt) * time.Second
 
-	if ttl_int < 0 {
+	if ttlInt < 0 {
 		global.UseClient.Client.Persist(ctx, key)
 	} else {
 		global.UseClient.Client.Expire(ctx, key, time).Result()

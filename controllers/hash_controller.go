@@ -13,36 +13,40 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type setController struct {
+type hashController struct {
 	BaseController
 }
 
-var Setc = setController{}
+var Hashc = hashController{}
 
-func (con *setController) Show(c *gin.Context) {
+/**
+* hash 展示列表
+**/
+func (con *hashController) Show(c *gin.Context) {
 	key := c.Query("key")
 
 	ctx := context.Background()
-	value, _ := global.UseClient.Client.SMembers(ctx, key).Result()
+
+	res, _ := global.UseClient.Client.HGetAll(ctx, key).Result()
 
 	time, _ := global.UseClient.Client.TTL(ctx, key).Result()
 
-	c.HTML(http.StatusOK, "show/set.html", gin.H{
-		"key":   key,
-		"value": value,
-		"time":  time.Seconds(),
+	c.HTML(http.StatusOK, "show/hash.html", gin.H{
+		"key":    key,
+		"result": res,
+		"time":   time.Seconds(),
 	})
 }
 
 /**
 * 删除特定值
 **/
-func (con *setController) Del(c *gin.Context) {
+func (con *hashController) Del(c *gin.Context) {
 	key := c.PostForm("key")
 	member := c.PostForm("member")
 	ctx := context.Background()
 
-	res, _ := global.UseClient.Client.SRem(ctx, key, member).Result()
+	res, _ := global.UseClient.Client.HDel(ctx, key, member).Result()
 
 	if res > 0 {
 		con.Success(c, "", "删除成功")

@@ -49,6 +49,9 @@ func init() {
 		"equalInt": func(first int, second int) bool {
 			return first == second
 		},
+		"add": func(key int, key1 int) int {
+			return key + key1
+		},
 	}
 }
 
