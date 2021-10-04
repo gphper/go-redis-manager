@@ -52,6 +52,7 @@ func Init() *gin.Engine {
 	{
 		hash_admin.GET("/show", controllers.Hashc.Show)
 		hash_admin.POST("/del", controllers.Hashc.Del)
+		hash_admin.POST("/add", controllers.Hashc.Add)
 	}
 
 	return router

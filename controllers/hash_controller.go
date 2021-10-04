@@ -55,3 +55,23 @@ func (con *hashController) Del(c *gin.Context) {
 	}
 
 }
+
+/**
+* 新增值
+**/
+func (con *hashController) Add(c *gin.Context) {
+	key := c.PostForm("key")
+	field := c.PostForm("field")
+	value := c.PostForm("value")
+
+	ctx := context.Background()
+
+	_, err := global.UseClient.Client.HSet(ctx, key, field, value).Result()
+
+	if err == nil {
+		con.Success(c, "", "添加成功")
+	} else {
+		con.Error(c, "添加失败")
+	}
+
+}
