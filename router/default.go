@@ -47,6 +47,7 @@ func Init() *gin.Engine {
 	{
 		zset_admin.GET("/show", controllers.Zsetc.Show)
 		zset_admin.POST("/del", controllers.Zsetc.Del)
+		zset_admin.POST("/add", controllers.Zsetc.Add)
 	}
 
 	hash_admin := admin.Group("/hash")

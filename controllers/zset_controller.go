@@ -10,8 +10,10 @@ import (
 	"fmt"
 	"goredismanager/global"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/go-redis/redis/v8"
 )
 
 type zsetController struct {
@@ -54,6 +56,31 @@ func (con *zsetController) Del(c *gin.Context) {
 		con.Success(c, "", "删除成功")
 	} else {
 		con.Error(c, "删除失败")
+	}
+
+}
+
+/**
+* 新增值
+**/
+func (con *zsetController) Add(c *gin.Context) {
+	key := c.PostForm("key")
+	value := c.PostForm("value")
+	score := c.PostForm("score")
+
+	scoreInt, _ := strconv.Atoi(score)
+
+	ctx := context.Background()
+
+	_, err := global.UseClient.Client.ZAdd(ctx, key, &redis.Z{
+		Score:  float64(scoreInt),
+		Member: value,
+	}).Result()
+
+	if err == nil {
+		con.Success(c, "", "添加成功")
+	} else {
+		con.Error(c, "添加失败")
 	}
 
 }
