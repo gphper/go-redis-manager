@@ -55,3 +55,22 @@ func (con *stringController) Ttl(c *gin.Context) {
 
 	con.Success(c, "", "设置成功")
 }
+
+/**
+* 编辑内容
+**/
+func (con *stringController) Save(c *gin.Context) {
+
+	key := c.PostForm("key")
+	content := c.PostForm("content")
+	ctx := context.Background()
+
+	_, err := global.UseClient.Client.Set(ctx, key, content, 0*time.Second).Result()
+
+	if err != nil {
+		con.Error(c, "设置失败")
+	} else {
+		con.Success(c, "", "设置成功")
+	}
+
+}

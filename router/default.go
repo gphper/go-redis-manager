@@ -26,6 +26,7 @@ func Init() *gin.Engine {
 	{
 		string_admin.GET("/show", controllers.Sc.Show)
 		string_admin.POST("/ttl", controllers.Sc.Ttl)
+		string_admin.POST("/save", controllers.Sc.Save)
 	}
 
 	list_admin := admin.Group("/list")

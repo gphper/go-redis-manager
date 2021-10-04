@@ -33,18 +33,19 @@
         </div>
     </div>
 
+    <div class="col-sm-12" style="margin-top: 10px;padding: 0px;">
+      <form action="/admin/string/save" method="post" class="ajaxForm" autocomplete="off">
+        <input type="hidden" name="key" value="{{.key}}">
+        <div class="col-sm-12" style="margin-top: 10px;">
+          <button type="submit" class="btn btn-primary">保存</button>
+        </div>
 
-    <div class="col-sm-12" style="margin-top: 10px;">
-      <form action="/admin/string/ttl" method="post" class="ajaxForm" autocomplete="off">
-        <button type="submit" class="btn btn-primary">保存</button>
+        <div class="col-sm-12" style="margin-top: 10px;">
+            <div class="form-group">
+                <textarea name="content" style="resize:none;" class="form-control" id="exampleFormControlTextarea1" rows="3">{{.value}}</textarea>
+              </div>
+        </div>
       </form>
-    </div>
-
-
-    <div class="col-sm-12" style="margin-top: 10px;">
-        <div class="form-group">
-            <textarea style="resize:none;" class="form-control" id="exampleFormControlTextarea1" rows="3">{{.value}}</textarea>
-          </div>
     </div>
 </div>
 </div>
