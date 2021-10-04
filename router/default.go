@@ -33,6 +33,7 @@ func Init() *gin.Engine {
 	{
 		list_admin.GET("/show", controllers.Lc.Show)
 		list_admin.POST("/del", controllers.Lc.Del)
+		list_admin.POST("/add", controllers.Lc.Add)
 	}
 
 	set_admin := admin.Group("/set")
