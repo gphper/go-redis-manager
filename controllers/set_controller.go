@@ -51,3 +51,22 @@ func (con *setController) Del(c *gin.Context) {
 	}
 
 }
+
+/**
+* 新增值
+**/
+func (con *setController) Add(c *gin.Context) {
+	key := c.PostForm("key")
+	value := c.PostForm("value")
+
+	ctx := context.Background()
+
+	_, err := global.UseClient.Client.SAdd(ctx, key, value).Result()
+
+	if err == nil {
+		con.Success(c, "", "添加成功")
+	} else {
+		con.Error(c, "添加失败")
+	}
+
+}

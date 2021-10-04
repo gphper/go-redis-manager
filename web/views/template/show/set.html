@@ -35,7 +35,9 @@
 
 
     <div class="col-sm-12" style="margin-top: 10px;">
-      
+      <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addSetModal">
+        新增元素
+      </button>
     </div>
     <div class="col-sm-12" style="overflow-y: auto;height: 500px;margin-top: 10px;">
       <table class="table">
@@ -95,6 +97,33 @@
     </div>
   </div>
 
+
+  <!-- Modal -->
+  <div class="modal fade" id="addSetModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">添加元素</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="/admin/set/add" method="post" class="ajaxForm" autocomplete="off">
+        <div class="modal-body">
+            <input type="hidden" name="key" value="{{.key}}">
+            <div class="form-group">
+              <label>字段值</label>
+              <input type="text" name="value" class="form-control" required>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+          <button type="submit" class="btn btn-primary">保存</button>
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>
 
 {{end}}
 

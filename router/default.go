@@ -40,6 +40,7 @@ func Init() *gin.Engine {
 	{
 		set_admin.GET("/show", controllers.Setc.Show)
 		set_admin.POST("/del", controllers.Setc.Del)
+		set_admin.POST("/add", controllers.Setc.Add)
 	}
 
 	zset_admin := admin.Group("/zset")
