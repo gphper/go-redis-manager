@@ -17,6 +17,8 @@ redis web客户端管理平台。优点：跨平台、部署简单
 
 :white_check_mark:支持 hash 类型
 
+:white_check_mark:支持 stream 类型
+
 ## 使用文档
 - [开始使用](#开始使用)
 
