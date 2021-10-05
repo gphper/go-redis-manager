@@ -6,6 +6,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 	"strings"
 
@@ -111,4 +112,27 @@ func (con *indexController) SearchKey(c *gin.Context) {
 	resultSlice := comment.GetOne(gen.Root, "")
 
 	con.AjaxReturn(c, AJAXSUCCESS, resultSlice)
+}
+
+func (con *indexController) AddKey(c *gin.Context) {
+
+	var (
+		req model.AddKeyReq
+		err error
+	)
+
+	err = con.FormBind(c, &req)
+
+	fmt.Printf("%+v", req)
+
+	if err != nil {
+		con.Error(c, "添加失败")
+	}
+
+	err = service.AddKey(req)
+	if err != nil {
+		con.Error(c, "添加失败")
+	}
+
+	con.Success(c, "", "添加成功")
 }

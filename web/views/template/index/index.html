@@ -8,37 +8,41 @@
   .layui-tree-entry{
     box-sizing: content-box !important;
   }
+
+  #field{
+    display: none;
+  }
+
+  #score{
+    display: none;
+  }
+
 </style>
 {{end}}
 
 
 {{define "body"}}
-<div class="row">
-  <div class="col-sm-5" style="padding-right: 0px;border-right: 3px solid rgb(217 217 217);">
-    <!-- <a href="https://www.cnblogs.com/" target="main">连接1</a>
-    <a href="https://gitee.com/yinqi" target="main">连接2</a> -->
-    <!-- 标题模块 -->
-    <nav class="navbar navbar-light bg-light">
-      <span class="navbar-text" style="font-size: 16px;">
-        Go Redis Manager
-      </span>
-    </nav>
+<!-- 标题模块 -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Go Redis Manager</a>
+  
 
-    <div class="col-sm-12" style="margin-top: 10px;">
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
       <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal">
         新建连接
       </button>
-    </div>
+    </form>
+  </div>
+</nav>
 
-    <!-- <div class="col-sm-12" style="margin-top: 10px;">
-      <div class="alert alert-info" role="alert">
-        当前连接名称： {{.service_name}}
-      </div>
-      <div class="alert alert-info" role="alert">
-        当前DataBase： {{.db}}
-      </div>
-    </div> -->
 
+<div class="row">
+  <div class="col-sm-5" style="padding-right: 0px;border-right: 3px solid rgb(217 217 217);">
+    
     <form action="/admin/switch" method="post" class="ajaxForm" autocomplete="off">
     <div class="col-sm-12" style="margin-top: 10px;">
       <div class="row">
@@ -113,7 +117,7 @@
     </div>
 
     <div class="col-sm-12" style="margin-top: 10px;">
-      <button type="button" class="btn btn-light btn-sm">新建键值</button>
+      <button data-toggle="modal" data-target="#addKeyModal" type="button" class="btn btn-light btn-sm">新建键值</button>
     </div>
     
 
@@ -165,6 +169,64 @@
   </div>
 </div>
 
+
+<!-- 新建键值 Modal -->
+<div class="modal fade" id="addKeyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">添加键值</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action="/admin/add_key" method="post" class="ajaxForm" autocomplete="off">
+      <div class="modal-body">
+          <div class="form-group">
+            <label>Key值</label>
+            <input type="text" name="key" class="form-control" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="exampleFormControlSelect1">类型</label>
+            <select name="type" class="form-control" id="exampleFormControlSelect1">
+              <option value="string">string</option>
+              <option value="list">list</option>
+              <option value="set">set</option>
+              <option value="zset">zset</option>
+              <option value="hash">hash</option>
+            </select>
+          </div>
+
+          <div id="field" class="form-group">
+            <label for="exampleFormControlTextarea1">字段名</label>
+            <input type="field" name="field" class="form-control">
+          </div>
+
+          <div id="score" class="form-group">
+            <label for="exampleFormControlTextarea1">分数</label>
+            <input type="number" name="score" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label for="exampleFormControlTextarea1">字段值</label>
+            <textarea class="form-control" name="value" id="exampleFormControlTextarea1" rows="3"></textarea>
+          </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+        <button type="submit" class="btn btn-primary">保存</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+
+
+
+
+
 {{end}}
 
 
@@ -203,7 +265,7 @@
                         contentType: 'application/json',
                         data: data.data,
                         customOperate:true,
-                        edit: ['add', 'del'],
+                        // edit: ['del'],
                         click: function(obj){
                             var data = obj.data;  //获取当前点击的节点数据
                             if (data.children == null){
@@ -211,7 +273,7 @@
                             }
                         },
                         operate:function(obj){
-                          console.log(obj)
+                          
                         }
                     })
                   })
@@ -231,6 +293,21 @@
     });
 
 
+</script>
+
+<script type="text/javascript">
+  $("#exampleFormControlSelect1").change(function(){
+    if($(this).val() == "zset"){
+      $("#score").show();
+      $("#field").hide();
+    }else if($(this).val() == "hash"){
+      $("#score").hide();
+      $("#field").show();
+    }else{
+      $("#score").hide();
+      $("#field").hide();
+    }
+  })
 </script>
 
 {{end}}

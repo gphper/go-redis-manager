@@ -93,7 +93,13 @@ func GetOne(node *TrieNode, allpre string) []Node {
 	}
 
 	sort.Slice(slice, func(i, j int) bool {
-		return slice[i].Title > slice[j].Title
+
+		if slice[i].Title == slice[j].Title {
+			return len(slice[i].Children) > len(slice[j].Children)
+		} else {
+			return slice[i].Title < slice[j].Title
+		}
+
 	})
 
 	return slice

@@ -9,6 +9,7 @@ import (
 	"context"
 	"goredismanager/global"
 	"goredismanager/model"
+	"time"
 
 	"github.com/go-redis/redis/v8"
 )
@@ -100,5 +101,28 @@ func SearchKeyType(conf model.RedisKeyReq) (keys []model.RedisKey, err error) {
 		}
 
 	}
+	return
+}
+
+func AddKey(req model.AddKeyReq) (err error) {
+
+	ctx := context.Background()
+
+	switch req.Type {
+	case "string":
+		_, err = global.UseClient.Client.Set(ctx, req.Key, req.Value, 0*time.Second).Result()
+	case "list":
+		_, err = global.UseClient.Client.LPush(ctx, req.Key, req.Value).Result()
+	case "set":
+		_, err = global.UseClient.Client.SAdd(ctx, req.Key, req.Value).Result()
+	case "zset":
+		_, err = global.UseClient.Client.ZAdd(ctx, req.Key, &redis.Z{
+			Score:  float64(req.Score),
+			Member: req.Value,
+		}).Result()
+	case "hash":
+		_, err = global.UseClient.Client.HSet(ctx, req.Key, req.Field, req.Value).Result()
+	}
+
 	return
 }
