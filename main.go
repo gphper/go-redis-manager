@@ -7,6 +7,8 @@ package main
 
 import (
 	"context"
+	"flag"
+	"fmt"
 	"goredismanager/router"
 	"goredismanager/web"
 	"log"
@@ -17,13 +19,23 @@ import (
 )
 
 func main() {
+
+	var host string
+	var port string
+
+	flag.StringVar(&host, "h", "127.0.0.1", "ip地址默认：127.0.0.1")
+	flag.StringVar(&port, "p", "8000", "端口地址默认：8000")
+	flag.Parse()
+
+	fmt.Println(port)
+
 	router := router.Init()
 
 	router.StaticFS("/statics", web.StaticsFs)
 	router.HTMLRender = web.LoadTemplates()
 
 	srv := &http.Server{
-		Addr:    "127.0.0.1:8000",
+		Addr:    host + ":" + port,
 		Handler: router,
 	}
 
