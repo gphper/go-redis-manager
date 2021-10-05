@@ -8,7 +8,6 @@ package main
 import (
 	"context"
 	"flag"
-	"fmt"
 	"goredismanager/router"
 	"goredismanager/web"
 	"log"
@@ -26,8 +25,6 @@ func main() {
 	flag.StringVar(&host, "h", "127.0.0.1", "ip地址默认：127.0.0.1")
 	flag.StringVar(&port, "p", "8000", "端口地址默认：8000")
 	flag.Parse()
-
-	fmt.Println(port)
 
 	router := router.Init()
 

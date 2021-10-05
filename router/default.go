@@ -58,5 +58,12 @@ func Init() *gin.Engine {
 		hash_admin.POST("/add", controllers.Hashc.Add)
 	}
 
+	stream_admin := admin.Group("/stream")
+	{
+		stream_admin.GET("/show", controllers.Streamc.Show)
+		stream_admin.POST("/del", controllers.Streamc.Del)
+		stream_admin.POST("/add", controllers.Streamc.Add)
+	}
+
 	return router
 }

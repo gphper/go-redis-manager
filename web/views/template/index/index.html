@@ -17,6 +17,10 @@
     display: none;
   }
 
+  #id{
+    display: none;
+  }
+
 </style>
 {{end}}
 
@@ -195,6 +199,7 @@
               <option value="set">set</option>
               <option value="zset">zset</option>
               <option value="hash">hash</option>
+              <option value="stream">stream</option>
             </select>
           </div>
 
@@ -206,6 +211,11 @@
           <div id="score" class="form-group">
             <label for="exampleFormControlTextarea1">分数</label>
             <input type="number" name="score" class="form-control">
+          </div>
+
+          <div id="id" class="form-group">
+            <label for="exampleFormControlTextarea1">ID</label>
+            <input type="text" name="id" value="*" class="form-control">
           </div>
 
           <div class="form-group">
@@ -299,12 +309,19 @@
   $("#exampleFormControlSelect1").change(function(){
     if($(this).val() == "zset"){
       $("#score").show();
+      $("#id").hide();
       $("#field").hide();
     }else if($(this).val() == "hash"){
       $("#score").hide();
+      $("#id").hide();
       $("#field").show();
+    }else if($(this).val() == "stream"){
+      $("#id").show();
+      $("#field").hide();
+      $("#score").hide();
     }else{
       $("#score").hide();
+      $("#id").hide();
       $("#field").hide();
     }
   })

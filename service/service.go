@@ -7,6 +7,7 @@ package service
 
 import (
 	"context"
+	"encoding/json"
 	"goredismanager/global"
 	"goredismanager/model"
 	"time"
@@ -122,6 +123,19 @@ func AddKey(req model.AddKeyReq) (err error) {
 		}).Result()
 	case "hash":
 		_, err = global.UseClient.Client.HSet(ctx, req.Key, req.Field, req.Value).Result()
+	case "stream":
+		obj := make(map[string]interface{})
+
+		err = json.Unmarshal([]byte(req.Value), &obj)
+		if err != nil {
+			return
+		}
+
+		_, err = global.UseClient.Client.XAdd(ctx, &redis.XAddArgs{
+			Stream: req.Key,
+			ID:     req.Id,
+			Values: obj,
+		}).Result()
 	}
 
 	return

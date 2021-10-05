@@ -6,7 +6,6 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
 	"strings"
 
@@ -123,15 +122,15 @@ func (con *indexController) AddKey(c *gin.Context) {
 
 	err = con.FormBind(c, &req)
 
-	fmt.Printf("%+v", req)
-
 	if err != nil {
-		con.Error(c, "添加失败")
+		con.Error(c, err.Error())
+		return
 	}
 
 	err = service.AddKey(req)
 	if err != nil {
-		con.Error(c, "添加失败")
+		con.Error(c, err.Error())
+		return
 	}
 
 	con.Success(c, "", "添加成功")

@@ -51,7 +51,7 @@ func (con *zsetController) Del(c *gin.Context) {
 	ctx := context.Background()
 
 	res, _ := global.UseClient.Client.ZRem(ctx, key, member).Result()
-	fmt.Println(res)
+
 	if res > 0 {
 		con.Success(c, "", "删除成功")
 	} else {

@@ -7,7 +7,6 @@ package controllers
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -30,7 +29,7 @@ func (con *stringController) Show(c *gin.Context) {
 	value, _ := global.UseClient.Client.Get(ctx, key).Result()
 
 	time, _ := global.UseClient.Client.TTL(ctx, key).Result()
-	fmt.Println(time.Seconds())
+
 	c.HTML(http.StatusOK, "show/string.html", gin.H{
 		"key":   key,
 		"value": value,

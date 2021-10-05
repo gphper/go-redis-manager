@@ -33,4 +33,5 @@ type AddKeyReq struct {
 	Field string `form:"field" label:"字段名" json:"field" default:""`
 	Value string `form:"value" label:"字段值" json:"value" binding:"required" default:""`
 	Score int    `form:"score" label:"分数" json:"score" default:"1"`
+	Id    string `form:"id" label:"ID" json:"id" default:"*"`
 }
