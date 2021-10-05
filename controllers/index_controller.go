@@ -43,6 +43,7 @@ func (con *indexController) SaveConfig(c *gin.Context) {
 	err = con.FormBind(c, &serviceReq)
 	if err != nil {
 		con.Error(c, err.Error())
+		return
 	}
 
 	err = service.AddServiceConf(serviceReq)

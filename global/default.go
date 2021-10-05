@@ -28,25 +28,25 @@ type RedisService struct {
 func init() {
 	RedisServiceStorage = make(map[string]RedisService)
 
-	optionConfig := &redis.Options{
-		Addr:     "127.0.0.1:6380",
-		Password: "hengda",
-		DB:       0,
-	}
+	// optionConfig := &redis.Options{
+	// 	Addr:     "127.0.0.1:6380",
+	// 	Password: "hengda",
+	// 	DB:       0,
+	// }
 
-	client := redis.NewClient(optionConfig)
+	// client := redis.NewClient(optionConfig)
 
-	RsSlice := RedisService{
-		RedisService: "docker",
-		Config:       optionConfig,
-		Client:       client,
-	}
+	// RsSlice := RedisService{
+	// 	RedisService: "docker",
+	// 	Config:       optionConfig,
+	// 	Client:       client,
+	// }
 
-	RedisServiceStorage["docker"] = RsSlice
+	// RedisServiceStorage["docker"] = RsSlice
 
-	//设置全局参数
-	UseClient.ConnectName = "docker"
-	UseClient.Db = 0
-	UseClient.Client = client
+	// //设置全局参数
+	// UseClient.ConnectName = "docker"
+	// UseClient.Db = 0
+	// UseClient.Client = client
 
 }
