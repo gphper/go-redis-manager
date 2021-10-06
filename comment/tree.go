@@ -7,18 +7,18 @@ package comment
 
 import (
 	"sort"
-	"strings"
 )
 
 // 字典树节点
 type TrieNode struct {
 	children map[string]*TrieNode
+	types    string
 	isEnd    bool
 }
 
 // 构造字典树节点
 func newTrieNode() *TrieNode {
-	return &TrieNode{children: make(map[string]*TrieNode), isEnd: false}
+	return &TrieNode{children: make(map[string]*TrieNode), isEnd: false, types: "none"}
 }
 
 // 字典树
@@ -32,7 +32,7 @@ func NewTrie() *Trie {
 }
 
 // 向字典树中插入一个单词
-func (trie *Trie) Insert(word []string) {
+func (trie *Trie) Insert(word []string, types string) {
 	node := trie.Root
 	for i := 0; i < len(word); i++ {
 		_, ok := node.children[word[i]]
@@ -43,6 +43,7 @@ func (trie *Trie) Insert(word []string) {
 	}
 
 	node.isEnd = true
+	node.types = types
 }
 
 type Node struct {
@@ -60,17 +61,14 @@ func GetOne(node *TrieNode, allpre string) []Node {
 		var tmp []Node
 		if node.children[k].isEnd {
 
-			if strings.Contains(k, "_") {
-
+			if node.children[k].types != "none" {
 				var qian string
-
-				kTypeSlice := strings.Split(k, "_")
 				if allpre != "" {
-					qian = allpre + ":" + kTypeSlice[0]
+					qian = allpre + ":" + k
 				} else {
-					qian = kTypeSlice[0]
+					qian = k
 				}
-				tmp = []Node{Node{Title: kTypeSlice[0], Type: kTypeSlice[1], All: qian}}
+				tmp = []Node{Node{Title: k, Type: node.children[k].types, All: qian}}
 			}
 
 			tmp = append(tmp, GetRepeat(node.children[k], k, allpre)...)
@@ -111,10 +109,10 @@ func GetRepeat(node *TrieNode, pre string, allpre string) []Node {
 	for k, v := range node.children {
 
 		var tempNode Node
-		if strings.Contains(k, "_") {
-			kTypeSlice := strings.Split(k, "_")
-			pre += ":" + kTypeSlice[0]
-			tempNode = Node{Title: pre, Type: kTypeSlice[1], All: allpre + ":" + k}
+
+		if node.children[k].types != "none" {
+			pre += ":" + k
+			tempNode = Node{Title: pre, Type: node.children[k].types, All: allpre + ":" + k}
 		} else {
 			pre += ":" + k
 			tempNode = Node{Title: pre}

@@ -101,11 +101,9 @@ func (con *indexController) SearchKey(c *gin.Context) {
 			return
 		}
 
-		v.Key += "_" + v.Type
-
 		stringSlice := strings.Split(v.Key, ":")
 
-		gen.Insert(stringSlice)
+		gen.Insert(stringSlice, v.Type)
 
 	}
 
