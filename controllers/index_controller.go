@@ -54,6 +54,33 @@ func (con *indexController) SaveConfig(c *gin.Context) {
 	con.Success(c, "", "添加连接成功")
 }
 
+func (con *indexController) SaveConfigFile(c *gin.Context) {
+
+	len := len(global.RedisServiceStorage)
+	confs := make([]model.ServiceConfigReq, len)
+
+	i := 0
+	for name, item := range global.RedisServiceStorage {
+
+		hostPort := strings.Split(item.Config.Addr, ":")
+
+		confs[i] = model.ServiceConfigReq{
+			ServiceName: name,
+			Host:        hostPort[0],
+			Port:        hostPort[1],
+			Password:    item.Config.Password,
+		}
+		i++
+	}
+	global.ConfigViper.Set("connections", confs)
+	err := global.ConfigViper.WriteConfig()
+	if err != nil {
+		con.Error(c, err.Error())
+		return
+	}
+	con.Success(c, "", "保存配置成功")
+}
+
 func (con *indexController) Switch(c *gin.Context) {
 
 	var (

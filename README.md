@@ -21,19 +21,29 @@ redis web客户端管理平台。优点：跨平台、部署简单
 
 ## 使用文档
 - [开始使用](#开始使用)
+- [配置文件](#配置文件)
 
 ### <a name="开始使用">开始使用</a>
 
 ```shell
--h string
-   ip地址默认：127.0.0.1 (default "127.0.0.1")
--p string
-   端口地址默认：8000 (default "8000")
+-c string
+        配置文件路径 (default "./config.yaml")
 ```
 
 ```
-默认访问地址：http://127.0.0.1:8000/admin/index
+默认访问地址：http://127.0.0.1:8088/admin/index
 ```
 
+### <a name="配置文件">配置文件</a>
+
+```yaml
+connections:
+- servicename: localhost
+  host: 127.0.0.1
+  port: "6379"
+  password: ""
+hostname: 127.0.0.1
+port: "8088"
+```
 
 

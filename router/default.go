@@ -19,6 +19,7 @@ func Init() *gin.Engine {
 	admin := router.Group("/admin")
 	admin.GET("/index", controllers.Ic.Show)
 	admin.POST("/save_config", controllers.Ic.SaveConfig)
+	admin.POST("/save_configfile", controllers.Ic.SaveConfigFile)
 	admin.POST("/switch", controllers.Ic.Switch)
 	admin.POST("/search_key", controllers.Ic.SearchKey)
 	admin.POST("/add_key", controllers.Ic.AddKey)
