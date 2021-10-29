@@ -11,14 +11,14 @@ import (
 
 // 字典树节点
 type TrieNode struct {
-	children map[string]*TrieNode
-	types    string
-	isEnd    bool
+	Children map[string]*TrieNode
+	Types    string
+	IsEnd    bool
 }
 
 // 构造字典树节点
 func newTrieNode() *TrieNode {
-	return &TrieNode{children: make(map[string]*TrieNode), isEnd: false, types: "none"}
+	return &TrieNode{Children: make(map[string]*TrieNode), IsEnd: false, Types: "none"}
 }
 
 // 字典树
@@ -35,15 +35,15 @@ func NewTrie() *Trie {
 func (trie *Trie) Insert(word []string, types string) {
 	node := trie.Root
 	for i := 0; i < len(word); i++ {
-		_, ok := node.children[word[i]]
+		_, ok := node.Children[word[i]]
 		if !ok {
-			node.children[word[i]] = newTrieNode()
+			node.Children[word[i]] = newTrieNode()
 		}
-		node = node.children[word[i]]
+		node = node.Children[word[i]]
 	}
 
-	node.isEnd = true
-	node.types = types
+	node.IsEnd = true
+	node.Types = types
 }
 
 type Node struct {
@@ -56,22 +56,22 @@ type Node struct {
 func GetOne(node *TrieNode, allpre string) []Node {
 	slice := make([]Node, 0)
 
-	for k, _ := range node.children {
+	for k, _ := range node.Children {
 
 		var tmp []Node
-		if node.children[k].isEnd {
+		if node.Children[k].IsEnd {
 
-			if node.children[k].types != "none" {
+			if node.Children[k].Types != "none" {
 				var qian string
 				if allpre != "" {
 					qian = allpre + ":" + k
 				} else {
 					qian = k
 				}
-				tmp = []Node{Node{Title: k, Type: node.children[k].types, All: qian}}
+				tmp = []Node{Node{Title: k, Type: node.Children[k].Types, All: qian}}
 			}
 
-			tmp = append(tmp, GetRepeat(node.children[k], k, allpre)...)
+			tmp = append(tmp, GetRepeat(node.Children[k], k, allpre)...)
 		} else {
 			var qian string
 			if allpre != "" {
@@ -82,7 +82,7 @@ func GetOne(node *TrieNode, allpre string) []Node {
 			tmp = []Node{Node{
 				Title:    k,
 				All:      qian,
-				Children: GetOne(node.children[k], qian),
+				Children: GetOne(node.Children[k], qian),
 			}}
 		}
 
@@ -106,13 +106,13 @@ func GetOne(node *TrieNode, allpre string) []Node {
 func GetRepeat(node *TrieNode, pre string, allpre string) []Node {
 
 	slice := make([]Node, 0)
-	for k, v := range node.children {
+	for k, v := range node.Children {
 
 		var tempNode Node
 
-		if node.children[k].types != "none" {
+		if node.Children[k].Types != "none" {
 			pre += ":" + k
-			tempNode = Node{Title: pre, Type: node.children[k].types, All: allpre + ":" + k}
+			tempNode = Node{Title: pre, Type: node.Children[k].Types, All: allpre + ":" + k}
 		} else {
 			pre += ":" + k
 			tempNode = Node{Title: pre}
