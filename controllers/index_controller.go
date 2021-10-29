@@ -134,8 +134,7 @@ func (con *indexController) SearchKey(c *gin.Context) {
 
 	}
 
-	resultSlice := comment.GetOne(gen.Root, "")
-
+	resultSlice := comment.GetOne(gen.Root.Children, "")
 	con.AjaxReturn(c, AJAXSUCCESS, resultSlice)
 }
 

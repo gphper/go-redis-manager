@@ -7,7 +7,7 @@ var sec1 = `<li class="list-group-item" style="padding-left:{pleft}px !important
     <div class="float-left" style="margin-top:5px;width: 200px">
           <i class="bi bi-key">&nbsp;</i>{name}
     </div>
-    <button type="button" tag="{tag}" class="add btn btn-primary btn-sm">查看</button>
+    <button type="button" tag="{tag}" key-type={keytype} class="add btn btn-primary btn-sm">查看</button>
     <button type="button" tag="{tag}" class="add btn btn-danger btn-sm">删除</button>
 </li>
 `
@@ -53,8 +53,7 @@ function htmlParse(node,layer){
             var item = htmlParse(node[i].children,layer)
             html += temp(sec2,{name: node[i].title,id:node[i].all.replaceAll(":","1"),item:item,pleft:layer*20,tag:node[i].all})
         }else{
-            console.log(node[i].title)
-            html += temp(sec1,{name:node[i].title,pleft:layer*20,tag:node[i].all});
+            html += temp(sec1,{name:node[i].title,pleft:layer*20,tag:node[i].all,keytype:node[i].type});
         }
     }
     return html

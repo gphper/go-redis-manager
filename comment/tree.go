@@ -5,9 +5,7 @@
  */
 package comment
 
-import (
-	"sort"
-)
+import "sort"
 
 // 字典树节点
 type TrieNode struct {
@@ -53,79 +51,30 @@ type Node struct {
 	Children []Node `json:"children"`
 }
 
-func GetOne(node *TrieNode, allpre string) []Node {
-	slice := make([]Node, 0)
-
-	for k, _ := range node.Children {
-
-		var tmp []Node
-		if node.Children[k].IsEnd {
-
-			if node.Children[k].Types != "none" {
-				var qian string
-				if allpre != "" {
-					qian = allpre + ":" + k
-				} else {
-					qian = k
-				}
-				tmp = []Node{Node{Title: k, Type: node.Children[k].Types, All: qian}}
-			}
-
-			tmp = append(tmp, GetRepeat(node.Children[k], k, allpre)...)
-		} else {
-			var qian string
-			if allpre != "" {
-				qian = allpre + ":" + k
-			} else {
-				qian = k
-			}
-			tmp = []Node{Node{
-				Title:    k,
-				All:      qian,
-				Children: GetOne(node.Children[k], qian),
-			}}
+func GetOne(children map[string]*TrieNode, pre string) []Node {
+	items := make([]Node, 0)
+	for k, v := range children {
+		if v.IsEnd && len(v.Children) != 0 {
+			tmp1 := Node{Title: k, Type: v.Types, All: pre + k, Children: nil}
+			items = append(items, tmp1)
 		}
-
-		slice = append(slice, tmp...)
-
+		tmp := Node{Title: k, Type: v.Types, All: pre + k, Children: nil}
+		if len(v.Children) != 0 {
+			tmp.Children = GetOne(v.Children, pre+k+":")
+		}
+		items = append(items, tmp)
 	}
 
-	sort.Slice(slice, func(i, j int) bool {
+	sort.Slice(items, func(i, j int) bool {
 
-		if slice[i].Title == slice[j].Title {
-			return len(slice[i].Children) > len(slice[j].Children)
+		if items[i].Title == items[j].Title {
+			return len(items[i].Children) > len(items[j].Children)
 		} else {
-			return slice[i].Title < slice[j].Title
+			return items[i].Title < items[j].Title
 		}
 
 	})
 
-	return slice
-}
+	return items
 
-func GetRepeat(node *TrieNode, pre string, allpre string) []Node {
-
-	slice := make([]Node, 0)
-	for k, v := range node.Children {
-
-		var tempNode Node
-
-		if node.Children[k].Types != "none" {
-			pre += ":" + k
-			tempNode = Node{Title: pre, Type: node.Children[k].Types, All: allpre + ":" + k}
-		} else {
-			pre += ":" + k
-			tempNode = Node{Title: pre}
-		}
-
-		slice = append(slice, tempNode)
-
-		tmpSlice := GetRepeat(v, pre, allpre)
-
-		if len(tmpSlice) > 0 {
-			slice = append(slice, tmpSlice...)
-		}
-	}
-
-	return slice
 }
