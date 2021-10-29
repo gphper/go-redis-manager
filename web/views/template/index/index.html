@@ -21,7 +21,19 @@
     display: none;
   }
 
+  .collapse .list-group-item:last-child{
+    border-bottom: 0px;
+  }
+
+  .father-node{
+    border-bottom: 0px;
+  }
+
+  .text-show{
+    width: 200px;
+  }
 </style>
+<link rel="stylesheet" href="/statics/bootstrap/css/bootstrap-icons.css" media="all">
 {{end}}
 
 
@@ -133,8 +145,12 @@
     
 
     <div class="col-sm-12" style="margin-top: 15px;overflow-y: auto;height: 300px;">
-      <div id="keys" class="demo-tree"></div>
+      <div id="main" class="demo-tree"></div>
+      <!-- <ul class="list-group" id="main"></ul> -->
     </div>
+    
+
+
 
   </div>
   <div class="col-sm-7" style="padding-left: 0px;">
@@ -275,25 +291,26 @@
             },
             success: function (data){
                 if (data.status) {
-                  layui.use('tree', function () {
-                    var tree = layui.tree;
-                    tree.render({
-                        elem: '#keys',
-                        contentType: 'application/json',
-                        data: data.data,
-                        customOperate:true,
-                        // edit: ['del'],
-                        click: function(obj){
-                            var data = obj.data;  //获取当前点击的节点数据
-                            if (data.children == null){
-                              document.getElementById("iframepage").src='/admin/'+data.type+'/show/'+'?key='+data.all; 
-                            }
-                        },
-                        operate:function(obj){
+                  showTree("main",data.data)
+                  // layui.use('tree', function () {
+                  //   var tree = layui.tree;
+                  //   tree.render({
+                  //       elem: '#keys',
+                  //       contentType: 'application/json',
+                  //       data: data.data,
+                  //       customOperate:true,
+                  //       // edit: ['del'],
+                  //       click: function(obj){
+                  //           var data = obj.data;  //获取当前点击的节点数据
+                  //           if (data.children == null){
+                  //             document.getElementById("iframepage").src='/admin/'+data.type+'/show/'+'?key='+data.all; 
+                  //           }
+                  //       },
+                  //       operate:function(obj){
                           
-                        }
-                    })
-                  })
+                  //       }
+                  //   })
+                  // })
                 } else {
                     layer.msg(data.data, {icon: 5, scrollbar: false, time: 2000, shade: [0.3, '#393D49']});
                 }
@@ -334,4 +351,12 @@
   })
 </script>
 
+<script src="/statics/js/tree.js"></script>
+<script type="text/javascript">
+  // data = `{"data":[{"title":"hello","type":"string","all":"hello","children":null},{"title":"hnsbcinema","type":"","all":"hnsbcinema","children":[{"title":"202109","type":"","all":"hnsbcinema:202109","children":[{"title":"10","type":"","all":"hnsbcinema:202109:10","children":[{"title":"sql_admin","type":"list","all":"hnsbcinema:202109:10:sql_admin","children":null}]},{"title":"13","type":"","all":"hnsbcinema:202109:13","children":[{"title":"error","type":"list","all":"hnsbcinema:202109:13:error","children":null},{"title":"sql_admin","type":"list","all":"hnsbcinema:202109:13:sql_admin","children":null}]},{"title":"20211028","type":"","all":"hnsbcinema:ticket_order_num:20211028","children":[{"title":"sn_set","type":"set","all":"hnsbcinema:ticket_order_num:20211028:sn_set","children":null},{"title":"ticket_sn_set","type":"set","all":"hnsbcinema:ticket_order_num:20211028:ticket_sn_set","children":null}]}]}]}],"status":1}`;
+  //   obj = JSON.parse(data)
+  //   list_arr = obj.data
+
+  //   showTree("main",list_arr)
+</script>
 {{end}}
