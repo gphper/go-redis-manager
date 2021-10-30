@@ -19,6 +19,14 @@ redis web客户端管理平台。优点：跨平台、部署简单
 
 :white_check_mark:支持 stream 类型
 
+## 待实现功能
+
+:black_square_button:用户登录
+
+:black_square_button:操作日志
+
+:black_square_button:SSH登录
+
 ## 使用文档
 - [开始使用](#开始使用)
 - [配置文件](#配置文件)
