@@ -140,3 +140,38 @@ func AddKey(req model.AddKeyReq) (err error) {
 
 	return
 }
+
+func DelKey(req model.DelKeyReq) (err error) {
+	ctx := context.Background()
+
+	if req.Type == "none" {
+
+		var cursor uint64
+		var tmpKeys []string
+
+		for {
+
+			tmpKeys, cursor, err = global.UseClient.Client.Scan(ctx, cursor, req.Key+":*", 1000).Result()
+			if err != nil {
+				return
+			}
+
+			_, err = global.UseClient.Client.Del(ctx, tmpKeys...).Result()
+			if err != nil {
+				return
+			}
+
+			if cursor == 0 {
+				break
+			}
+
+		}
+
+	} else {
+		_, err = global.UseClient.Client.Del(ctx, req.Key).Result()
+		if err != nil {
+			return
+		}
+	}
+	return
+}

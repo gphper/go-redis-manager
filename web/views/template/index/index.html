@@ -353,10 +353,83 @@
 
 <script src="/statics/js/tree.js"></script>
 <script type="text/javascript">
-  // data = `{"data":[{"title":"hello","type":"string","all":"hello","children":null},{"title":"hnsbcinema","type":"","all":"hnsbcinema","children":[{"title":"202109","type":"","all":"hnsbcinema:202109","children":[{"title":"10","type":"","all":"hnsbcinema:202109:10","children":[{"title":"sql_admin","type":"list","all":"hnsbcinema:202109:10:sql_admin","children":null}]},{"title":"13","type":"","all":"hnsbcinema:202109:13","children":[{"title":"error","type":"list","all":"hnsbcinema:202109:13:error","children":null},{"title":"sql_admin","type":"list","all":"hnsbcinema:202109:13:sql_admin","children":null}]},{"title":"20211028","type":"","all":"hnsbcinema:ticket_order_num:20211028","children":[{"title":"sn_set","type":"set","all":"hnsbcinema:ticket_order_num:20211028:sn_set","children":null},{"title":"ticket_sn_set","type":"set","all":"hnsbcinema:ticket_order_num:20211028:ticket_sn_set","children":null}]}]}]}],"status":1}`;
-  //   obj = JSON.parse(data)
-  //   list_arr = obj.data
+  function loadHandleFunc(){
+    $(".father-node").click(function(){
+        if($(this).children("div").children('i').attr('class') == "bi bi-folder2-open"){
+            $(this).children("div").children('i').attr('class',"bi bi-folder")
+        }else{
+            $(this).children("div").children('i').attr('class',"bi bi-folder2-open")
+        }
+    })
 
-  //   showTree("main",list_arr)
+    $(".addbtn").click(function (event){
+        alert("add");
+        event.stopPropagation();
+    })
+
+    $(".seebtn").click(function (event){
+        document.getElementById("iframepage").src='/admin/'+$(this).attr("key-type")+'/show/'+'?key='+$(this).attr("tag");
+        event.stopPropagation();
+    })
+
+    $(".delbtn").click(function (event){
+        var loading = layer.msg('系统处理中...', {icon: 16, shade: 0, time: 0});
+        var jq = $(this);
+        $.ajax({
+            type: "post",
+            url: "/admin/del_key",
+            data: {"key":$(this).attr("tag"),"type":$(this).attr("key-type")},
+            dataType: 'json',
+            beforeSend: function () {
+                formloading = true;
+            },
+            success: function (data){
+                if (data.status) {
+                  var pre = "";
+                  var that = jq.parent();
+                  var parent = jq.parent().parent();
+                  for(i = 0;i<20;i++){
+                  
+                    if(parent.children("li").length == 1){
+                      if(parent.attr("id") == "keys"){
+                        parent.remove()
+                        break;
+                      }
+                      pre = parent
+                    }else{
+                      that.remove()
+                      if(that.attr('href')){
+                        $(that.attr('href')).remove()
+                      }
+                      if(pre){
+                        $("li[href='#"+pre.attr('id')+"']").remove()
+                        if(pre.attr('id') != "main"){
+                          pre.remove()
+                        }else{
+                          pre.children().first().remove()
+                        }
+                        
+                      }
+                      break;
+                    }
+                    parent = parent.parent()
+                  }
+
+                } else {
+                    layer.msg(data.data, {icon: 5, scrollbar: false, time: 2000, shade: [0.3, '#393D49']});
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                
+            },
+            complete: function () {
+                formloading = false;
+                layer.close(loading);
+            }
+        });
+        
+        event.stopPropagation();
+    })
+}
 </script>
 {{end}}

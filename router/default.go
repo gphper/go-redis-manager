@@ -23,6 +23,7 @@ func Init() *gin.Engine {
 	admin.POST("/switch", controllers.Ic.Switch)
 	admin.POST("/search_key", controllers.Ic.SearchKey)
 	admin.POST("/add_key", controllers.Ic.AddKey)
+	admin.POST("/del_key", controllers.Ic.DelKey)
 
 	string_admin := admin.Group("/string")
 	{

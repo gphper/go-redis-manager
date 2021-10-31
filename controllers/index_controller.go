@@ -6,6 +6,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 	"strings"
 
@@ -159,4 +160,26 @@ func (con *indexController) AddKey(c *gin.Context) {
 	}
 
 	con.Success(c, "", "添加成功")
+}
+
+func (con *indexController) DelKey(c *gin.Context) {
+	var (
+		req model.DelKeyReq
+		err error
+	)
+
+	err = con.FormBind(c, &req)
+	if err != nil {
+		con.Error(c, err.Error())
+		return
+	}
+
+	err = service.DelKey(req)
+	if err != nil {
+		con.Error(c, err.Error())
+		return
+	}
+
+	fmt.Println(req)
+	con.AjaxReturn(c, AJAXSUCCESS, gin.H{})
 }

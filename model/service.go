@@ -35,3 +35,8 @@ type AddKeyReq struct {
 	Score int    `form:"score" label:"分数" json:"score" default:"1"`
 	Id    string `form:"id" label:"ID" json:"id" default:"*"`
 }
+
+type DelKeyReq struct {
+	Key  string `form:"key" label:"字段值" json:"key" binding:"required"`
+	Type string `form:"type" label:"类型" json:"type" binding:"required"`
+}
