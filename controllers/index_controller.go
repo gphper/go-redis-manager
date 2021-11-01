@@ -6,7 +6,6 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
 	"strings"
 
@@ -153,6 +152,8 @@ func (con *indexController) AddKey(c *gin.Context) {
 		return
 	}
 
+	req.Key = req.Pre + ":" + req.Key
+
 	err = service.AddKey(req)
 	if err != nil {
 		con.Error(c, err.Error())
@@ -180,6 +181,5 @@ func (con *indexController) DelKey(c *gin.Context) {
 		return
 	}
 
-	fmt.Println(req)
 	con.AjaxReturn(c, AJAXSUCCESS, gin.H{})
 }

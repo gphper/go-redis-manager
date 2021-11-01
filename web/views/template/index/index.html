@@ -21,6 +21,18 @@
     display: none;
   }
 
+  #fieldPre{
+    display: none;
+  }
+
+  #scorePre{
+    display: none;
+  }
+
+  #idPre{
+    display: none;
+  }
+
   .collapse .list-group-item:last-child{
     border-bottom: 0px;
   }
@@ -145,7 +157,9 @@
     
 
     <div class="col-sm-12" style="margin-top: 15px;overflow-y: auto;height: 300px;">
-      <div id="main" class="demo-tree"></div>
+      <div id="main" class="demo-tree">
+        <ul id="keys"></ul>
+      </div>
       <!-- <ul class="list-group" id="main"></ul> -->
     </div>
     
@@ -207,7 +221,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="/admin/add_key" method="post" class="ajaxForm" autocomplete="off">
+      <form action="/admin/add_key" method="post" id="addKeyForm" autocomplete="off">
       <div class="modal-body">
           <div class="form-group">
             <label>Key值</label>
@@ -257,179 +271,76 @@
 </div>
 
 
+<!-- 新建已有字段键值 Modal -->
+<div class="modal fade" id="addPreKeyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">添加键值</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action="/admin/add_key" method="post" id="addPreKeyForm" autocomplete="off">
+      <div class="modal-body">
+         
+          <div class="form-group">
+            <label>Key值</label>
+            <div class="input-group">
+              <div id="prekey" class="input-group-addon" style="background: darkgrey;color: currentcolor;font-size: 15px;padding: 10px;"></div>
+              <input type="text" name="key"  class="form-control">
+            </div>
+          </div>
+          <input type="hidden" name="prekey" class="form-control" required value="">
 
+          <div class="form-group">
+            <label for="exampleFormControlSelect1Pre">类型</label>
+            <select name="type" class="form-control" id="exampleFormControlSelect1Pre">
+              <option value="string">string</option>
+              <option value="list">list</option>
+              <option value="set">set</option>
+              <option value="zset">zset</option>
+              <option value="hash">hash</option>
+              <option value="stream">stream</option>
+            </select>
+          </div>
+
+          <div id="fieldPre" class="form-group">
+            <label for="exampleFormControlTextarea1">字段名</label>
+            <input type="field" name="field" class="form-control">
+          </div>
+
+          <div id="scorePre" class="form-group">
+            <label for="exampleFormControlTextarea1">分数</label>
+            <input type="number" name="score" class="form-control">
+          </div>
+
+          <div id="idPre" class="form-group">
+            <label for="exampleFormControlTextarea1">ID</label>
+            <input type="text" name="id" value="*" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label for="exampleFormControlTextarea1">字段值</label>
+            <textarea class="form-control" name="value" id="exampleFormControlTextarea1" rows="3"></textarea>
+          </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+        <button type="submit" class="btn btn-primary">保存</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
 
 
 {{end}}
 
 
 {{define "script"}}
-<script>
-
-  $('#myModal').on('shown.bs.modal', function () {
-    $('#myInput').trigger('focus')
-  })
-
-
-  var formloading = false;
-    $('.search_key').submit(function () {
-        $(this).find('.help-block').remove();
-        $(this).find('.has-error').removeClass('has-error');
-
-        if (formloading) {
-            return false;
-        }
-
-        var loading = layer.msg('系统处理中...', {icon: 16, shade: 0, time: 0});
-        $.ajax({
-            type: $(this).prop('method'),
-            url: $(this).prop('action'),
-            data: $(this).serialize(),
-            dataType: 'json',
-            beforeSend: function () {
-                formloading = true;
-            },
-            success: function (data){
-                if (data.status) {
-                  showTree("main",data.data)
-                  // layui.use('tree', function () {
-                  //   var tree = layui.tree;
-                  //   tree.render({
-                  //       elem: '#keys',
-                  //       contentType: 'application/json',
-                  //       data: data.data,
-                  //       customOperate:true,
-                  //       // edit: ['del'],
-                  //       click: function(obj){
-                  //           var data = obj.data;  //获取当前点击的节点数据
-                  //           if (data.children == null){
-                  //             document.getElementById("iframepage").src='/admin/'+data.type+'/show/'+'?key='+data.all; 
-                  //           }
-                  //       },
-                  //       operate:function(obj){
-                          
-                  //       }
-                  //   })
-                  // })
-                } else {
-                    layer.msg(data.data, {icon: 5, scrollbar: false, time: 2000, shade: [0.3, '#393D49']});
-                }
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                
-            },
-            complete: function () {
-                formloading = false;
-                layer.close(loading);
-            }
-        });
-        return false;
-    });
-
-
-</script>
-
-<script type="text/javascript">
-  $("#exampleFormControlSelect1").change(function(){
-    if($(this).val() == "zset"){
-      $("#score").show();
-      $("#id").hide();
-      $("#field").hide();
-    }else if($(this).val() == "hash"){
-      $("#score").hide();
-      $("#id").hide();
-      $("#field").show();
-    }else if($(this).val() == "stream"){
-      $("#id").show();
-      $("#field").hide();
-      $("#score").hide();
-    }else{
-      $("#score").hide();
-      $("#id").hide();
-      $("#field").hide();
-    }
-  })
-</script>
 
 <script src="/statics/js/tree.js"></script>
-<script type="text/javascript">
-  function loadHandleFunc(){
-    $(".father-node").click(function(){
-        if($(this).children("div").children('i').attr('class') == "bi bi-folder2-open"){
-            $(this).children("div").children('i').attr('class',"bi bi-folder")
-        }else{
-            $(this).children("div").children('i').attr('class',"bi bi-folder2-open")
-        }
-    })
-
-    $(".addbtn").click(function (event){
-        alert("add");
-        event.stopPropagation();
-    })
-
-    $(".seebtn").click(function (event){
-        document.getElementById("iframepage").src='/admin/'+$(this).attr("key-type")+'/show/'+'?key='+$(this).attr("tag");
-        event.stopPropagation();
-    })
-
-    $(".delbtn").click(function (event){
-        var loading = layer.msg('系统处理中...', {icon: 16, shade: 0, time: 0});
-        var jq = $(this);
-        $.ajax({
-            type: "post",
-            url: "/admin/del_key",
-            data: {"key":$(this).attr("tag"),"type":$(this).attr("key-type")},
-            dataType: 'json',
-            beforeSend: function () {
-                formloading = true;
-            },
-            success: function (data){
-                if (data.status) {
-                  var pre = "";
-                  var that = jq.parent();
-                  var parent = jq.parent().parent();
-                  for(i = 0;i<20;i++){
-                  
-                    if(parent.children("li").length == 1){
-                      if(parent.attr("id") == "keys"){
-                        parent.remove()
-                        break;
-                      }
-                      pre = parent
-                    }else{
-                      that.remove()
-                      if(that.attr('href')){
-                        $(that.attr('href')).remove()
-                      }
-                      if(pre){
-                        $("li[href='#"+pre.attr('id')+"']").remove()
-                        if(pre.attr('id') != "main"){
-                          pre.remove()
-                        }else{
-                          pre.children().first().remove()
-                        }
-                        
-                      }
-                      break;
-                    }
-                    parent = parent.parent()
-                  }
-
-                } else {
-                    layer.msg(data.data, {icon: 5, scrollbar: false, time: 2000, shade: [0.3, '#393D49']});
-                }
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                
-            },
-            complete: function () {
-                formloading = false;
-                layer.close(loading);
-            }
-        });
-        
-        event.stopPropagation();
-    })
-}
-</script>
+<script src="/statics/js/index.js"></script>
 {{end}}

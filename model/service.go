@@ -29,6 +29,7 @@ type RedisKey struct {
 
 type AddKeyReq struct {
 	Key   string `form:"key" label:"字段值" json:"key" binding:"required"`
+	Pre   string `form:"prekey" json:"prekey"`
 	Type  string `form:"type" label:"类型" json:"type" binding:"required"`
 	Field string `form:"field" label:"字段名" json:"field" default:""`
 	Value string `form:"value" label:"字段值" json:"value" binding:"required" default:""`
