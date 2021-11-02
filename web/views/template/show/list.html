@@ -4,6 +4,7 @@
  * @Date: 2021-09-26 19:47:26
 -->
 {{define "head"}}
+<link href="/statics/css/jquery.json-viewer.css" type="text/css" rel="stylesheet" />
 <style>
    .table {table-layout:fixed;}
 </style>
@@ -47,7 +48,7 @@
           <tr>
             <th scope="col" style="width: 10%;">序号</th>
             <th scope="col" style="width: 75%;">值</th>
-            <th scope="col" style="width: 15%;">操作</th>
+            <th scope="col" style="width: 20%;">操作</th>
           </tr>
         </thead>
         <tbody>
@@ -56,11 +57,14 @@
             <td>{{$i}}</td>
             <td>{{$v}}</td>
             <td>
+              
               <form action="/admin/list/del" method="post" class="ajaxForm" autocomplete="off">
                 <input type="hidden" name="key" value="{{$.key}}">
                 <input type="hidden" name="index" value="{{$i}}">
+                <button type="button" class="seeBtn btn btn-sm btn-primary">查看</button>
                 <button type="submit" class="btn btn-sm btn-danger">删除</button>
               </form>
+              
             </td>
           </tr>
           {{end}}
@@ -128,9 +132,43 @@
   </div>
 </div>
 
+
+<div class="modal fade" id="showJson" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">显示json</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action="" method="post" class="ajaxForm" autocomplete="off">
+      <div class="modal-body">
+        <pre id="json-renderer"></pre>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+        <!-- <button type="submit" class="btn btn-primary">保存</button> -->
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
 {{end}}
 
 
 {{define "script"}}
-
+<script src="/statics/js/jquery.json-viewer.js"></script>
+<script type="text/javascript">
+$(".seeBtn").click(function(){
+  $("#showJson").modal("show");
+  console.log($(this).parent().parent().parent().children("td")[1].textContent);
+  var options = {
+		  collapsed: false,
+		  withQuotes: false
+	};
+  var input = eval('(' + $(this).parent().parent().parent().children("td")[1].textContent + ')');
+	$("#json-renderer").jsonViewer(input, options);
+})
+</script>
 {{end}}

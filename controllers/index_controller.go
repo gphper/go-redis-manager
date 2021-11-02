@@ -152,7 +152,9 @@ func (con *indexController) AddKey(c *gin.Context) {
 		return
 	}
 
-	req.Key = req.Pre + ":" + req.Key
+	if req.Pre != "" {
+		req.Key = req.Pre + ":" + req.Key
+	}
 
 	err = service.AddKey(req)
 	if err != nil {

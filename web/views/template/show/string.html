@@ -4,7 +4,7 @@
  * @Date: 2021-09-26 19:47:26
 -->
 {{define "head"}}
-
+<link href="/statics/css/jquery.json-viewer.css" type="text/css" rel="stylesheet" />
 {{end}}
 
 
@@ -38,6 +38,7 @@
         <input type="hidden" name="key" value="{{.key}}">
         <div class="col-sm-12" style="margin-top: 10px;">
           <button type="submit" class="btn btn-primary">保存</button>
+          <button type="button" id="seeBtn" class="btn btn-primary">查看</button>
         </div>
 
         <div class="col-sm-12" style="margin-top: 10px;">
@@ -79,9 +80,43 @@
   </div>
 
 
+  <div class="modal fade" id="showJson" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">显示json</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="" method="post" class="ajaxForm" autocomplete="off">
+        <div class="modal-body">
+          <pre id="json-renderer"></pre>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+          <!-- <button type="submit" class="btn btn-primary">保存</button> -->
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>
+
 {{end}}
 
 
 {{define "script"}}
-
+<script src="/statics/js/jquery.json-viewer.js"></script>
+<script type="text/javascript">
+$("#seeBtn").click(function(){
+  $("#showJson").modal("show");
+  console.log($("#exampleFormControlTextarea1").val());
+  var options = {
+		  collapsed: false,
+		  withQuotes: false
+	};
+  var input = eval('(' + $("#exampleFormControlTextarea1").val() + ')');
+	$("#json-renderer").jsonViewer(input, options);
+})
+</script>
 {{end}}
