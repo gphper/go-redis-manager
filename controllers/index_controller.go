@@ -6,6 +6,7 @@
 package controllers
 
 import (
+	"context"
 	"net/http"
 	"strings"
 
@@ -108,7 +109,7 @@ func (con *indexController) SearchKey(c *gin.Context) {
 	var (
 		err    error
 		req    model.RedisKeyReq
-		result []model.RedisKey
+		result []string
 	)
 
 	err = con.FormBind(c, &req)
@@ -117,20 +118,20 @@ func (con *indexController) SearchKey(c *gin.Context) {
 		return
 	}
 
-	result, _ = service.SearchKeyType(req)
+	result, err = service.SearchKeyType(req)
+
+	if err != nil {
+		con.AjaxReturn(c, AJAXFAIL, "Key值不存在")
+		return
+	}
 
 	gen := comment.NewTrie()
 
 	for _, v := range result {
 
-		if v.Type == "none" {
-			con.AjaxReturn(c, AJAXFAIL, "Key值不存在")
-			return
-		}
+		stringSlice := strings.Split(v, ":")
 
-		stringSlice := strings.Split(v.Key, ":")
-
-		gen.Insert(stringSlice, v.Type)
+		gen.Insert(stringSlice, v)
 
 	}
 
@@ -184,4 +185,18 @@ func (con *indexController) DelKey(c *gin.Context) {
 	}
 
 	con.AjaxReturn(c, AJAXSUCCESS, gin.H{})
+}
+
+func (con *indexController) ShowKey(c *gin.Context) {
+	key := c.Query("key")
+
+	types, err := global.UseClient.Client.Type(context.Background(), key).Result()
+
+	if err == nil {
+
+		htmlString, data := service.TransView(types, key)
+
+		c.HTML(http.StatusOK, htmlString, data)
+	}
+
 }

@@ -245,7 +245,7 @@ function loadHandleFunc(){
   })
 
   $(".seebtn").click(function (event){
-      document.getElementById("iframepage").src='/admin/'+$(this).attr("key-type")+'/show/'+'?key='+$(this).attr("tag");
+      document.getElementById("iframepage").src='/admin/show_key/'+'?key='+$(this).attr("tag");
       event.stopPropagation();
   })
 

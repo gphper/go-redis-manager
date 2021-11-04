@@ -22,11 +22,6 @@ type RedisKeyReq struct {
 	SearchType int    `form:"type" label:"搜索模式" json:"type" binding:"required"`
 }
 
-type RedisKey struct {
-	Key  string
-	Type string
-}
-
 type AddKeyReq struct {
 	Key   string `form:"key" label:"字段值" json:"key" binding:"required"`
 	Pre   string `form:"prekey" json:"prekey"`

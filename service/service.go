@@ -12,6 +12,7 @@ import (
 	"goredismanager/model"
 	"time"
 
+	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis/v8"
 )
 
@@ -64,20 +65,16 @@ func ServiceSwitch(conf model.ServiceSwitchReq) (err error) {
 	return nil
 }
 
-func SearchKeyType(conf model.RedisKeyReq) (keys []model.RedisKey, err error) {
+func SearchKeyType(conf model.RedisKeyReq) (keys []string, err error) {
 
 	ctx := context.Background()
 
 	if conf.SearchType == 1 {
 		//查询指定值
-		var keyType string
+		keys = append(keys, conf.SearchKey)
 
-		keyType, err = global.UseClient.Client.Type(ctx, conf.SearchKey).Result()
-		keys = append(keys, model.RedisKey{
-			Key:  conf.SearchKey,
-			Type: keyType,
-		})
-
+		_, err = global.UseClient.Client.Exists(ctx, conf.SearchKey).Result()
+		return
 	} else {
 		//模糊匹配
 		var cursor uint64
@@ -87,13 +84,7 @@ func SearchKeyType(conf model.RedisKeyReq) (keys []model.RedisKey, err error) {
 
 			tmpKeys, cursor, err = global.UseClient.Client.Scan(ctx, cursor, conf.SearchKey, 100).Result()
 
-			for _, tmpKey := range tmpKeys {
-				kryType, _ := global.UseClient.Client.Type(ctx, tmpKey).Result()
-				keys = append(keys, model.RedisKey{
-					Key:  tmpKey,
-					Type: kryType,
-				})
-			}
+			keys = append(keys, tmpKeys...)
 
 			if cursor == 0 {
 				break
@@ -171,6 +162,67 @@ func DelKey(req model.DelKeyReq) (err error) {
 		_, err = global.UseClient.Client.Del(ctx, req.Key).Result()
 		if err != nil {
 			return
+		}
+	}
+	return
+}
+
+func TransView(keyType string, keys string) (htmlString string, data gin.H) {
+
+	ctx := context.Background()
+
+	time, _ := global.UseClient.Client.TTL(ctx, keys).Result()
+
+	switch keyType {
+	case "string":
+
+		value, _ := global.UseClient.Client.Get(ctx, keys).Result()
+
+		htmlString = "show/string.html"
+		data = gin.H{
+			"key":   keys,
+			"value": value,
+			"time":  time.Seconds(),
+		}
+	case "list":
+
+		value, _ := global.UseClient.Client.LRange(ctx, keys, 0, -1).Result()
+
+		htmlString = "show/list.html"
+		data = gin.H{
+			"key":   keys,
+			"value": value,
+			"time":  time.Seconds(),
+		}
+	case "zset":
+
+		zvalue, _ := global.UseClient.Client.ZRangeWithScores(ctx, keys, 0, -1).Result()
+
+		htmlString = "show/zset.html"
+		data = gin.H{
+			"key":    keys,
+			"zvalue": zvalue,
+			"time":   time.Seconds(),
+		}
+	case "set":
+
+		value, _ := global.UseClient.Client.SMembers(ctx, keys).Result()
+
+		htmlString = "show/set.html"
+		data = gin.H{
+			"key":   keys,
+			"value": value,
+			"time":  time.Seconds(),
+		}
+	case "hash":
+
+		res, _ := global.UseClient.Client.HGetAll(ctx, keys).Result()
+
+		htmlString = "show/hash.html"
+		data = gin.H{
+			"key":    keys,
+			"result": res,
+			"time":   time.Seconds(),
 		}
 	}
 	return

@@ -24,45 +24,40 @@ func Init() *gin.Engine {
 	admin.POST("/search_key", controllers.Ic.SearchKey)
 	admin.POST("/add_key", controllers.Ic.AddKey)
 	admin.POST("/del_key", controllers.Ic.DelKey)
+	admin.GET("/show_key", controllers.Ic.ShowKey)
 
 	string_admin := admin.Group("/string")
 	{
-		string_admin.GET("/show", controllers.Sc.Show)
 		string_admin.POST("/ttl", controllers.Sc.Ttl)
 		string_admin.POST("/save", controllers.Sc.Save)
 	}
 
 	list_admin := admin.Group("/list")
 	{
-		list_admin.GET("/show", controllers.Lc.Show)
 		list_admin.POST("/del", controllers.Lc.Del)
 		list_admin.POST("/add", controllers.Lc.Add)
 	}
 
 	set_admin := admin.Group("/set")
 	{
-		set_admin.GET("/show", controllers.Setc.Show)
 		set_admin.POST("/del", controllers.Setc.Del)
 		set_admin.POST("/add", controllers.Setc.Add)
 	}
 
 	zset_admin := admin.Group("/zset")
 	{
-		zset_admin.GET("/show", controllers.Zsetc.Show)
 		zset_admin.POST("/del", controllers.Zsetc.Del)
 		zset_admin.POST("/add", controllers.Zsetc.Add)
 	}
 
 	hash_admin := admin.Group("/hash")
 	{
-		hash_admin.GET("/show", controllers.Hashc.Show)
 		hash_admin.POST("/del", controllers.Hashc.Del)
 		hash_admin.POST("/add", controllers.Hashc.Add)
 	}
 
 	stream_admin := admin.Group("/stream")
 	{
-		stream_admin.GET("/show", controllers.Streamc.Show)
 		stream_admin.POST("/del", controllers.Streamc.Del)
 		stream_admin.POST("/add", controllers.Streamc.Add)
 	}
