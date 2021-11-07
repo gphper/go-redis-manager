@@ -52,6 +52,9 @@ func init() {
 		"add": func(key int, key1 int) int {
 			return key + key1
 		},
+		"compareInt": func(key1 int, key2 int) bool {
+			return key1 > key2
+		},
 	}
 }
 

@@ -65,11 +65,19 @@
       </button>
     </form>
     &nbsp;
-    <form class="form-inline my-2 my-lg-0 ajaxForm" action="/admin/save_configfile" method="post">
+    <form class="form-inline my-2 my-lg-0 ajaxForm" action="/save_configfile" method="post">
       <button type="submit" class="btn btn-primary btn-sm">
         持久化连接信息
       </button>
     </form>
+    &nbsp;
+    {{if compareInt .account_num 0}}
+    <form class="form-inline my-2 my-lg-0 ajaxForm" action="/login_out" method="post">
+      <button type="submit" class="btn btn-danger btn-sm">
+        退出
+      </button>
+    </form>
+    {{end}}
 
   </div>
 </nav>
@@ -78,7 +86,7 @@
 <div class="row">
   <div class="col-sm-5" style="padding-right: 0px;border-right: 3px solid rgb(217 217 217);">
     
-    <form action="/admin/switch" method="post" class="ajaxForm" autocomplete="off">
+    <form action="/switch" method="post" class="ajaxForm" autocomplete="off">
     <div class="col-sm-12" style="margin-top: 10px;">
       <div class="row">
         <div class="form-group col-md-5">
@@ -116,7 +124,7 @@
 
     <div class="col-sm-12">
 
-    <form action="/admin/search_key" method="post" class="search_key">  
+    <form action="/search_key" method="post" class="search_key">  
       <div class="btn-toolbar mb-12" role="toolbar" aria-label="Toolbar with button groups">
         <div class="input-group">
           <div class="input-group-prepend">
@@ -135,7 +143,7 @@
 
     <div class="col-sm-12" style="margin-top: 10px;">
 
-      <form action="/admin/search_key" method="post" class="search_key">
+      <form action="/search_key" method="post" class="search_key">
       <div class="btn-toolbar mb-12" role="toolbar" aria-label="Toolbar with button groups">
         <div class="input-group">
           <div class="input-group-prepend">
@@ -182,7 +190,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="/admin/save_config" method="post" class="ajaxForm" autocomplete="off">
+      <form action="/save_config" method="post" class="ajaxForm" autocomplete="off">
       <div class="modal-body form-row">
           <div class="form-group col-md-12">
             <label>连接名称</label>
@@ -257,7 +265,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="/admin/add_key" method="post" id="addKeyForm" autocomplete="off">
+      <form action="/add_key" method="post" id="addKeyForm" autocomplete="off">
       <div class="modal-body">
           <div class="form-group">
             <label>Key值</label>
@@ -317,7 +325,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="/admin/add_key" method="post" id="addPreKeyForm" autocomplete="off">
+      <form action="/add_key" method="post" id="addPreKeyForm" autocomplete="off">
       <div class="modal-body">
          
           <div class="form-group">
@@ -394,4 +402,17 @@
     }
   })
 </script>
+<script type="text/javascript" language="javascript"> 
+  function calcPageHeight(doc) {
+      var cHeight = Math.max(doc.body.clientHeight, doc.documentElement.clientHeight)
+      var sHeight = Math.max(doc.body.scrollHeight, doc.documentElement.scrollHeight)
+      var height  = Math.max(cHeight, sHeight)
+      return height
+  }
+  window.onload = function() {
+      var height = calcPageHeight(document)
+      parent.document.getElementById('iframepage').style.height = height+'px';
+  }
+
+  </script>
 {{end}}

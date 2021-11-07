@@ -22,6 +22,7 @@ var RedisServiceStorage map[string]RedisService
 var HostName string
 var Port string
 var ConfigViper *viper.Viper
+var Accounts map[string]string
 
 var UseClient GlobalClient
 
@@ -41,6 +42,7 @@ type RedisService struct {
 
 func init() {
 	RedisServiceStorage = make(map[string]RedisService)
+	Accounts = make(map[string]string)
 
 	//获取配置文件
 	var configPath string
@@ -123,20 +125,13 @@ func init() {
 
 	}
 
-	// optionConfig := &redis.Options{
-	// 	Addr:     "127.0.0.1:6380",
-	// 	Password: "hengda",
-	// 	DB:       0,
-	// }
-
-	// client := redis.NewClient(optionConfig)
-
-	// RsSlice := RedisService{
-	// 	RedisService: "docker",
-	// 	Config:       optionConfig,
-	// 	Client:       client,
-	// }
-
-	// RedisServiceStorage["docker"] = RsSlice
+	accounts := ConfigViper.Get("accounts")
+	if accounts != nil {
+		slice_account := accounts.([]interface{})
+		for _, account := range slice_account {
+			accountMap := account.(map[interface{}]interface{})
+			Accounts[accountMap["account"].(string)] = accountMap["password"].(string)
+		}
+	}
 
 }

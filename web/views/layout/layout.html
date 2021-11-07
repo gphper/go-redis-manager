@@ -38,19 +38,7 @@
     <script src="/statics/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="/statics/layui/layui/layui.js" charset="utf-8"></script>
     <script src="/statics/js/public.js"></script>
-    <script type="text/javascript" language="javascript"> 
-    function calcPageHeight(doc) {
-        var cHeight = Math.max(doc.body.clientHeight, doc.documentElement.clientHeight)
-        var sHeight = Math.max(doc.body.scrollHeight, doc.documentElement.scrollHeight)
-        var height  = Math.max(cHeight, sHeight)
-        return height
-    }
-    window.onload = function() {
-        var height = calcPageHeight(document)
-        parent.document.getElementById('iframepage').style.height = height+'px';
-    }
-
-    </script>
+    
     {{template "script" .}}
   
   </body>

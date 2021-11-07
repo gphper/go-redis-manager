@@ -7,6 +7,10 @@ github.com/fsnotify/fsnotify
 # github.com/gin-contrib/gzip v0.0.3
 ## explicit
 github.com/gin-contrib/gzip
+# github.com/gin-contrib/sessions v0.0.4
+## explicit
+github.com/gin-contrib/sessions
+github.com/gin-contrib/sessions/cookie
 # github.com/gin-contrib/sse v0.1.0
 github.com/gin-contrib/sse
 # github.com/gin-gonic/gin v1.7.4
@@ -42,6 +46,12 @@ github.com/go-redis/redis/v8/internal/rand
 github.com/go-redis/redis/v8/internal/util
 # github.com/golang/protobuf v1.5.2
 github.com/golang/protobuf/proto
+# github.com/gorilla/context v1.1.1
+github.com/gorilla/context
+# github.com/gorilla/securecookie v1.1.1
+github.com/gorilla/securecookie
+# github.com/gorilla/sessions v1.2.0
+github.com/gorilla/sessions
 # github.com/gphper/multitemplate v0.1.0
 ## explicit
 github.com/gphper/multitemplate
@@ -141,6 +151,10 @@ google.golang.org/protobuf/reflect/protoregistry
 google.golang.org/protobuf/runtime/protoiface
 google.golang.org/protobuf/runtime/protoimpl
 google.golang.org/protobuf/types/descriptorpb
+# gopkg.in/go-playground/assert.v1 v1.2.1
+## explicit
+# gopkg.in/go-playground/validator.v9 v9.29.1
+## explicit
 # gopkg.in/ini.v1 v1.63.2
 gopkg.in/ini.v1
 # gopkg.in/yaml.v2 v2.4.0

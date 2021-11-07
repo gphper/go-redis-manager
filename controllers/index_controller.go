@@ -32,6 +32,7 @@ func (con *indexController) Show(c *gin.Context) {
 		"service_name": global.UseClient.ConnectName,
 		"db":           global.UseClient.Db,
 		"db_slice":     dbSlice,
+		"account_num":  len(global.Accounts),
 	})
 
 }

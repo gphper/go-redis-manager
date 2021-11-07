@@ -21,9 +21,9 @@ redis web客户端管理平台。优点：跨平台、部署简单。欢迎star�
 
 :white_check_mark:SSH 连接 redis
 
-## 待实现功能
+:white_check_mark:用户登录验证
 
-:black_square_button:用户登录
+## 待实现功能
 
 :black_square_button:操作日志
 
@@ -39,18 +39,29 @@ redis web客户端管理平台。优点：跨平台、部署简单。欢迎star�
 ```
 
 ```
-默认访问地址：http://127.0.0.1:8088/admin/index
+默认访问地址：http://127.0.0.1:8088/index
 ```
 
 ### <a name="配置文件">配置文件</a>
 
 ```yaml
 connections:
+# 不启动ssh的配置方法  
 - servicename: localhost
   host: 127.0.0.1
   port: "6379"
+  password: ""
+  usessh: 0
+  sshconfig:
+    sshhost: ""
+    sshport: ""
+    sshusername: ""
+    sshpassword: ""
+# 启动ssh的配置方法     
+- servicename: ceshi
+  host: 127.0.0.1
+  port: "6379"
   password: redispass
-  #是否启用ssh连接
   usessh: 1
   sshconfig:
     sshhost: 127.0.0.1
@@ -59,6 +70,10 @@ connections:
     sshpassword: "123456"
 hostname: 127.0.0.1
 port: "8088"
+#启用用户登录验证 不需要此功能则将 accounts 数据块注释掉即可
+accounts:
+- account: "admin"
+  password: "123456"
 ```
 
 

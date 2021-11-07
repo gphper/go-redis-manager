@@ -55,7 +55,7 @@
             <td>{{$v.Member}}</td>
             <td>{{$v.Score}}</td>
             <td>
-              <form action="/admin/zset/del" method="post" class="ajaxForm" autocomplete="off">
+              <form action="/zset/del" method="post" class="ajaxForm" autocomplete="off">
                 <input type="hidden" name="key" value="{{$.key}}">
                 <input type="hidden" name="member" value="{{$v.Member}}">
                 <button type="submit" class="btn btn-sm btn-danger">删除</button>
@@ -81,7 +81,7 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form action="/admin/string/ttl" method="post" class="ajaxForm" autocomplete="off">
+        <form action="/string/ttl" method="post" class="ajaxForm" autocomplete="off">
         <div class="modal-body">
             <div class="form-group">
               <label>新的TTL(-1 表示永不过期)</label>
@@ -109,7 +109,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="/admin/zset/add" method="post" class="ajaxForm" autocomplete="off">
+      <form action="/zset/add" method="post" class="ajaxForm" autocomplete="off">
       <div class="modal-body">
           <input type="hidden" name="key" value="{{.key}}">
           <div class="form-group">

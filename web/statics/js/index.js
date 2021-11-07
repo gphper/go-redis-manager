@@ -245,7 +245,7 @@ function loadHandleFunc(){
   })
 
   $(".seebtn").click(function (event){
-      document.getElementById("iframepage").src='/admin/show_key/'+'?key='+$(this).attr("tag");
+      document.getElementById("iframepage").src='/show_key/'+'?key='+$(this).attr("tag");
       event.stopPropagation();
   })
 
@@ -254,7 +254,7 @@ function loadHandleFunc(){
       var jq = $(this);
       $.ajax({
           type: "post",
-          url: "/admin/del_key",
+          url: "/del_key",
           data: {"key":$(this).attr("tag"),"type":$(this).attr("key-type")},
           dataType: 'json',
           beforeSend: function () {

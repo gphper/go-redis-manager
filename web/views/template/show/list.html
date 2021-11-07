@@ -58,7 +58,7 @@
             <td>{{$v}}</td>
             <td>
               
-              <form action="/admin/list/del" method="post" class="ajaxForm" autocomplete="off">
+              <form action="/list/del" method="post" class="ajaxForm" autocomplete="off">
                 <input type="hidden" name="key" value="{{$.key}}">
                 <input type="hidden" name="index" value="{{$i}}">
                 <button type="button" class="seeBtn btn btn-sm btn-primary">查看</button>
@@ -86,7 +86,7 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form action="/admin/string/ttl" method="post" class="ajaxForm" autocomplete="off">
+        <form action="/string/ttl" method="post" class="ajaxForm" autocomplete="off">
         <div class="modal-body">
             <div class="form-group">
               <label>新的TTL(-1 表示永不过期)</label>
@@ -115,7 +115,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="/admin/list/add" method="post" class="ajaxForm" autocomplete="off">
+      <form action="/list/add" method="post" class="ajaxForm" autocomplete="off">
       <div class="modal-body">
           <div class="form-group">
             <label>元素值</label>
