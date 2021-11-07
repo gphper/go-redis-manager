@@ -10,6 +10,8 @@ type ServiceConfigReq struct {
 	Host        string `form:"host" label:"IP地址" json:"host" binding:"required"`
 	Port        string `form:"port" label:"端口号" json:"port" binding:"required"`
 	Password    string `form:"password" label:"密码" json:"password"`
+	UseSsh      int    `form:"use_ssh" json:"use_ssh"`
+	SSHConfig   SSHConfig
 }
 
 type ServiceSwitchReq struct {
@@ -35,4 +37,11 @@ type AddKeyReq struct {
 type DelKeyReq struct {
 	Key  string `form:"key" label:"字段值" json:"key" binding:"required"`
 	Type string `form:"type" label:"类型" json:"type" binding:"required"`
+}
+
+type SSHConfig struct {
+	SshHost     string `form:"ssh_host" json:"ssh_host"`
+	SshPort     string `form:"ssh_port" json:"ssh_port"`
+	SshUsername string `form:"ssh_username" json:"ssh_username"`
+	SshPassword string `form:"ssh_password" json:"ssh_password"`
 }

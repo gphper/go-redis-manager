@@ -3,5 +3,21 @@ connections:
   host: 127.0.0.1
   port: "6379"
   password: ""
+  usessh: 0
+  sshconfig:
+    sshhost: ""
+    sshport: ""
+    sshusername: ""
+    sshpassword: ""
+- servicename: ceshi
+  host: 127.0.0.1
+  port: "6379"
+  password: redispass
+  usessh: 1
+  sshconfig:
+    sshhost: 127.0.0.1
+    sshport: "2203"
+    sshusername: root
+    sshpassword: "123456"
 hostname: 127.0.0.1
 port: "8088"

@@ -183,22 +183,58 @@
         </button>
       </div>
       <form action="/admin/save_config" method="post" class="ajaxForm" autocomplete="off">
-      <div class="modal-body">
-          <div class="form-group">
+      <div class="modal-body form-row">
+          <div class="form-group col-md-12">
             <label>连接名称</label>
-            <input type="text" name="service_name" class="form-control" required>
+            <input type="text" name="service_name" class="form-control" value="ceshi" required>
           </div>
-          <div class="form-group">
-            <label>IP地址</label>
-            <input type="text" name="host" class="form-control" required>
+
+          <div class="form-row col-md-12">
+            <div class="form-group col-md-6">
+              <label>IP地址</label>
+              <input type="text" name="host" class="form-control" value="127.0.0.1" required>
+            </div>
+            <div class="form-group col-md-6">
+              <label>端口号</label>
+              <input type="text" name="port" class="form-control" value="6379" required>
+            </div>
           </div>
-          <div class="form-group">
-            <label>端口号</label>
-            <input type="text" name="port" class="form-control" required>
-          </div>
-          <div class="form-group">
+
+          <div class="form-group col-md-12">
             <label>密码</label>
-            <input type="password" name="password" class="form-control">
+            <input type="password" name="password" value="redispass" class="form-control">
+          </div>
+
+          <div class="form-group col-md-12">
+            <div class="form-check">
+              <input class="form-check-input" name="use_ssh" checked value="1" type="checkbox" id="gridCheck">
+              <label class="form-check-label" for="gridCheck">
+                启用SSH连接
+              </label>
+            </div>
+          </div>
+
+          <div id="ssh" style="display: none;">
+            <div class="form-row col-md-12">
+              <div class="form-group col-md-6">
+                <label>SSH地址</label>
+                <input type="text" name="ssh_host" value="127.0.0.1" class="form-control">
+              </div>
+              <div class="form-group col-md-6">
+                <label>SSH端口号</label>
+                <input type="text" name="ssh_port" value="2203" class="form-control">
+              </div>
+            </div>
+  
+            <div class="form-group col-md-12">
+              <label>SSH用户</label>
+              <input type="text" name="ssh_username" value="root" class="form-control">
+            </div>
+            
+            <div class="form-group col-md-12">
+              <label>SSH密码</label>
+              <input type="password" name="ssh_password"  value="123456" class="form-control">
+            </div>
           </div>
       </div>
       <div class="modal-footer">
@@ -343,4 +379,19 @@
 
 <script src="/statics/js/tree.js"></script>
 <script src="/statics/js/index.js"></script>
+<script type="text/javascript">
+  $("#gridCheck").change(function(){
+    if($(this).prop('checked')){
+      $("#ssh").show();
+      $("input[name=ssh_host]").attr("required",'');
+      $("input[name=ssh_port]").attr("required",'');
+      $("input[name=ssh_password]").attr("required",'');
+    }else{
+      $("#ssh").hide();
+      $("input[name=ssh_host]").removeAttr("required");
+      $("input[name=ssh_port]").removeAttr("required");
+      $("input[name=ssh_password]").removeAttr("required");
+    }
+  })
+</script>
 {{end}}

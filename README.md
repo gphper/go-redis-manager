@@ -19,13 +19,13 @@ redis web客户端管理平台。优点：跨平台、部署简单
 
 :white_check_mark:支持 stream 类型
 
+:white_check_mark:SSH 连接 redis
+
 ## 待实现功能
 
 :black_square_button:用户登录
 
 :black_square_button:操作日志
-
-:black_square_button:SSH登录
 
 ## 使用文档
 - [开始使用](#开始使用)
@@ -49,7 +49,14 @@ connections:
 - servicename: localhost
   host: 127.0.0.1
   port: "6379"
-  password: ""
+  password: redispass
+  #是否启用ssh连接
+  usessh: 1
+  sshconfig:
+    sshhost: 127.0.0.1
+    sshport: "2203"
+    sshusername: root
+    sshpassword: "123456"
 hostname: 127.0.0.1
 port: "8088"
 ```

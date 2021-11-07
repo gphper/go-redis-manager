@@ -8,15 +8,21 @@ package service
 import (
 	"context"
 	"encoding/json"
+	"fmt"
+	"goredismanager/comment"
 	"goredismanager/global"
 	"goredismanager/model"
+	"net"
 	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis/v8"
+	"golang.org/x/crypto/ssh"
 )
 
 func AddServiceConf(conf model.ServiceConfigReq) (err error) {
+	var cli *ssh.Client
+
 	optionConfig := &redis.Options{
 		Addr:     conf.Host + ":" + conf.Port,
 		Password: conf.Password,
@@ -24,6 +30,17 @@ func AddServiceConf(conf model.ServiceConfigReq) (err error) {
 	}
 
 	ctx := context.Background()
+	if conf.UseSsh == 1 {
+		cli, err = comment.GetSSHClient(conf.SSHConfig.SshUsername, conf.SSHConfig.SshPassword, conf.SSHConfig.SshHost+":"+conf.SSHConfig.SshPort)
+		if nil != err {
+			return
+		}
+		optionConfig.Dialer = func(ctx context.Context, network, addr string) (net.Conn, error) {
+			return cli.Dial(network, addr)
+		}
+	}
+
+	fmt.Println(conf)
 
 	client := redis.NewClient(optionConfig)
 
@@ -35,6 +52,8 @@ func AddServiceConf(conf model.ServiceConfigReq) (err error) {
 	RsSlice := global.RedisService{
 		RedisService: conf.ServiceName,
 		Config:       optionConfig,
+		UseSsh:       conf.UseSsh,
+		SSHConfig:    conf.SSHConfig,
 		Client:       client,
 	}
 

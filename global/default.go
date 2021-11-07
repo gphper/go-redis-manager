@@ -8,6 +8,9 @@ package global
 import (
 	"context"
 	"flag"
+	"goredismanager/comment"
+	"goredismanager/model"
+	"net"
 	"path"
 	"strings"
 
@@ -31,6 +34,8 @@ type GlobalClient struct {
 type RedisService struct {
 	RedisService string
 	Config       *redis.Options
+	UseSsh       int
+	SSHConfig    model.SSHConfig
 	Client       *redis.Client
 }
 
@@ -77,6 +82,17 @@ func init() {
 				Addr:     vv["host"].(string) + ":" + vv["port"].(string),
 				Password: vv["password"].(string),
 				DB:       0,
+			}
+
+			if vv["usessh"] == 1 {
+				sshConfig := vv["sshconfig"].(map[interface{}]interface{})
+				cli, err := comment.GetSSHClient(sshConfig["sshusername"].(string), sshConfig["sshpassword"].(string), sshConfig["sshhost"].(string)+":"+sshConfig["sshport"].(string))
+				if nil != err {
+					panic(err)
+				}
+				optionConfig.Dialer = func(ctx context.Context, network, addr string) (net.Conn, error) {
+					return cli.Dial(network, addr)
+				}
 			}
 
 			client := redis.NewClient(optionConfig)

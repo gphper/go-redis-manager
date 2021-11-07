@@ -11,4 +11,5 @@ require (
 	github.com/go-redis/redis/v8 v8.11.3
 	github.com/gphper/multitemplate v0.1.0
 	github.com/spf13/viper v1.9.0
+	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519
 )
