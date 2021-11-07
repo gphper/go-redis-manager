@@ -7,7 +7,6 @@ package controllers
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"strings"
 
@@ -47,7 +46,7 @@ func (con *indexController) SaveConfig(c *gin.Context) {
 		con.Error(c, err.Error())
 		return
 	}
-	fmt.Println(serviceReq)
+
 	err = service.AddServiceConf(serviceReq)
 	if err != nil {
 		con.Error(c, err.Error())

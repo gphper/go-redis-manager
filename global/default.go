@@ -97,6 +97,8 @@ func init() {
 
 			client := redis.NewClient(optionConfig)
 
+			client.AddHook(comment.RedisLog{})
+
 			_, err := client.Ping(context.Background()).Result()
 			if err != nil {
 				panic(vv["servicename"].(string) + "连接失败:" + err.Error())

@@ -8,7 +8,6 @@ package service
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"goredismanager/comment"
 	"goredismanager/global"
 	"goredismanager/model"
@@ -40,9 +39,9 @@ func AddServiceConf(conf model.ServiceConfigReq) (err error) {
 		}
 	}
 
-	fmt.Println(conf)
-
 	client := redis.NewClient(optionConfig)
+
+	client.AddHook(comment.RedisLog{})
 
 	_, err = client.Ping(ctx).Result()
 	if err != nil {

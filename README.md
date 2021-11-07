@@ -1,5 +1,5 @@
 # GoRedisManager
-redis web客户端管理平台。优点：跨平台、部署简单
+redis web客户端管理平台。优点：跨平台、部署简单。欢迎star！！
 
 ![logo](readme/index.JPG)
 
