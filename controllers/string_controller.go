@@ -7,7 +7,6 @@ package controllers
 
 import (
 	"context"
-	"net/http"
 	"strconv"
 	"time"
 
@@ -21,21 +20,6 @@ type stringController struct {
 }
 
 var Sc = stringController{}
-
-func (con *stringController) Show(c *gin.Context) {
-	key := c.Query("key")
-
-	ctx := context.Background()
-	value, _ := global.UseClient.Client.Get(ctx, key).Result()
-
-	time, _ := global.UseClient.Client.TTL(ctx, key).Result()
-
-	c.HTML(http.StatusOK, "show/string.html", gin.H{
-		"key":   key,
-		"value": value,
-		"time":  time.Seconds(),
-	})
-}
 
 func (con *stringController) Ttl(c *gin.Context) {
 

@@ -8,7 +8,6 @@ package controllers
 import (
 	"context"
 	"goredismanager/global"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
@@ -18,25 +17,6 @@ type hashController struct {
 }
 
 var Hashc = hashController{}
-
-/**
-* hash 展示列表
-**/
-func (con *hashController) Show(c *gin.Context) {
-	key := c.Query("key")
-
-	ctx := context.Background()
-
-	res, _ := global.UseClient.Client.HGetAll(ctx, key).Result()
-
-	time, _ := global.UseClient.Client.TTL(ctx, key).Result()
-
-	c.HTML(http.StatusOK, "show/hash.html", gin.H{
-		"key":    key,
-		"result": res,
-		"time":   time.Seconds(),
-	})
-}
 
 /**
 * 删除特定值

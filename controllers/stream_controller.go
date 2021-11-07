@@ -8,9 +8,7 @@ package controllers
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"goredismanager/global"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis/v8"
@@ -21,25 +19,6 @@ type streamController struct {
 }
 
 var Streamc = streamController{}
-
-/**
-* 展示列表
-**/
-func (con *streamController) Show(c *gin.Context) {
-	key := c.Query("key")
-
-	ctx := context.Background()
-
-	zvalue, _ := global.UseClient.Client.XRange(ctx, key, "-", "+").Result()
-	fmt.Printf("%+v", zvalue)
-	time, _ := global.UseClient.Client.TTL(ctx, key).Result()
-
-	c.HTML(http.StatusOK, "show/stream.html", gin.H{
-		"key":    key,
-		"zvalue": zvalue,
-		"time":   time.Seconds(),
-	})
-}
 
 /**
 * 添加

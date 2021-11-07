@@ -8,7 +8,6 @@ package controllers
 import (
 	"context"
 	"goredismanager/global"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
@@ -18,21 +17,6 @@ type setController struct {
 }
 
 var Setc = setController{}
-
-func (con *setController) Show(c *gin.Context) {
-	key := c.Query("key")
-
-	ctx := context.Background()
-	value, _ := global.UseClient.Client.SMembers(ctx, key).Result()
-
-	time, _ := global.UseClient.Client.TTL(ctx, key).Result()
-
-	c.HTML(http.StatusOK, "show/set.html", gin.H{
-		"key":   key,
-		"value": value,
-		"time":  time.Seconds(),
-	})
-}
 
 /**
 * 删除特定值

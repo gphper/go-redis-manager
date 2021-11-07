@@ -8,7 +8,6 @@ package controllers
 import (
 	"context"
 	"goredismanager/global"
-	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -19,24 +18,6 @@ type listController struct {
 }
 
 var Lc = listController{}
-
-/**
-* list 列表展示
-**/
-func (con *listController) Show(c *gin.Context) {
-	key := c.Query("key")
-
-	ctx := context.Background()
-	value, _ := global.UseClient.Client.LRange(ctx, key, 0, -1).Result()
-
-	time, _ := global.UseClient.Client.TTL(ctx, key).Result()
-
-	c.HTML(http.StatusOK, "show/list.html", gin.H{
-		"key":   key,
-		"value": value,
-		"time":  time.Seconds(),
-	})
-}
 
 /**
 * 删除特定值

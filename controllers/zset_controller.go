@@ -7,9 +7,7 @@ package controllers
 
 import (
 	"context"
-	"fmt"
 	"goredismanager/global"
-	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -21,26 +19,6 @@ type zsetController struct {
 }
 
 var Zsetc = zsetController{}
-
-/**
-* 展示列表
- */
-func (con *zsetController) Show(c *gin.Context) {
-	key := c.Query("key")
-
-	ctx := context.Background()
-
-	time, _ := global.UseClient.Client.TTL(ctx, key).Result()
-
-	zvalue, _ := global.UseClient.Client.ZRangeWithScores(ctx, key, 0, -1).Result()
-	fmt.Printf("%+v", zvalue)
-
-	c.HTML(http.StatusOK, "show/zset.html", gin.H{
-		"key":    key,
-		"zvalue": zvalue,
-		"time":   time.Seconds(),
-	})
-}
 
 /**
 * 删除特定值
