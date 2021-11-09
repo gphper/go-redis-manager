@@ -13,7 +13,9 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"os/exec"
 	"os/signal"
+	"runtime"
 	"time"
 )
 
@@ -32,6 +34,15 @@ func main() {
 	go func() {
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			log.Fatalf("listen: %s\n", err)
+		}
+
+	}()
+
+	go func() {
+		//windows 自动打开访问地址
+		if runtime.GOOS == "windows" {
+			cmd := exec.Command("cmd", "/c start http://"+srv.Addr+"/index")
+			cmd.Start()
 		}
 	}()
 
