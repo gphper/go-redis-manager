@@ -121,7 +121,7 @@ func (con *indexController) SearchKey(c *gin.Context) {
 		return
 	}
 
-	result, err = service.SearchKeyType(req)
+	result, err = service.SearchKeyType(req, c)
 
 	if err != nil {
 		con.AjaxReturn(c, AJAXFAIL, "Key值不存在")
@@ -147,6 +147,8 @@ func (con *indexController) AddKey(c *gin.Context) {
 	var (
 		req model.AddKeyReq
 		err error
+		val interface{}
+		ctx context.Context
 	)
 
 	err = con.FormBind(c, &req)
@@ -160,7 +162,12 @@ func (con *indexController) AddKey(c *gin.Context) {
 		req.Key = req.Pre + ":" + req.Key
 	}
 
-	err = service.AddKey(req)
+	val, _ = c.Get("username")
+
+	ctx = context.WithValue(context.Background(), "username", val)
+
+	err = service.AddKey(req, ctx)
+
 	if err != nil {
 		con.Error(c, err.Error())
 		return
@@ -173,6 +180,8 @@ func (con *indexController) DelKey(c *gin.Context) {
 	var (
 		req model.DelKeyReq
 		err error
+		val interface{}
+		ctx context.Context
 	)
 
 	err = con.FormBind(c, &req)
@@ -181,7 +190,11 @@ func (con *indexController) DelKey(c *gin.Context) {
 		return
 	}
 
-	err = service.DelKey(req)
+	val, _ = c.Get("username")
+
+	ctx = context.WithValue(context.Background(), "username", val)
+
+	err = service.DelKey(req, ctx)
 	if err != nil {
 		con.Error(c, err.Error())
 		return
@@ -193,11 +206,15 @@ func (con *indexController) DelKey(c *gin.Context) {
 func (con *indexController) ShowKey(c *gin.Context) {
 	key := c.Query("key")
 
-	types, err := global.UseClient.Client.Type(context.Background(), key).Result()
+	val, _ := c.Get("username")
+
+	ctx := context.WithValue(context.Background(), "username", val)
+
+	types, err := global.UseClient.Client.Type(ctx, key).Result()
 
 	if err == nil {
 
-		htmlString, data := service.TransView(types, key)
+		htmlString, data := service.TransView(types, key, ctx)
 
 		c.HTML(http.StatusOK, htmlString, data)
 	}

@@ -12,7 +12,9 @@ require (
 	github.com/go-redis/redis/v8 v8.11.3
 	github.com/gphper/multitemplate v0.1.0
 	github.com/spf13/viper v1.9.0
+	go.uber.org/zap v1.19.1
 	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519
 	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
 	gopkg.in/go-playground/validator.v9 v9.29.1 // indirect
+	gopkg.in/natefinch/lumberjack.v2 v2.0.0
 )

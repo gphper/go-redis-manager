@@ -42,7 +42,8 @@ func (con *streamController) Add(c *gin.Context) {
 		return
 	}
 
-	ctx := context.Background()
+	val, _ := c.Get("username")
+	ctx := context.WithValue(context.Background(), "username", val)
 
 	_, err = global.UseClient.Client.XAdd(ctx, &redis.XAddArgs{
 		Stream: key,
@@ -62,9 +63,12 @@ func (con *streamController) Add(c *gin.Context) {
 **/
 func (con *streamController) Del(c *gin.Context) {
 	key := c.PostForm("key")
+
 	id := c.PostForm("id")
 
-	ctx := context.Background()
+	val, _ := c.Get("username")
+
+	ctx := context.WithValue(context.Background(), "username", val)
 
 	_, err := global.UseClient.Client.XDel(ctx, key, id).Result()
 

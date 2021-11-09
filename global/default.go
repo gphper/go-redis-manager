@@ -99,7 +99,9 @@ func init() {
 
 			client := redis.NewClient(optionConfig)
 
-			client.AddHook(comment.RedisLog{})
+			client.AddHook(comment.RedisLog{
+				Logger: comment.NewLogger(vv["servicename"].(string)),
+			})
 
 			_, err := client.Ping(context.Background()).Result()
 			if err != nil {

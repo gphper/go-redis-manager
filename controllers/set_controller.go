@@ -23,8 +23,12 @@ var Setc = setController{}
 **/
 func (con *setController) Del(c *gin.Context) {
 	key := c.PostForm("key")
+
 	member := c.PostForm("member")
-	ctx := context.Background()
+
+	val, _ := c.Get("username")
+
+	ctx := context.WithValue(context.Background(), "username", val)
 
 	res, _ := global.UseClient.Client.SRem(ctx, key, member).Result()
 
@@ -41,9 +45,12 @@ func (con *setController) Del(c *gin.Context) {
 **/
 func (con *setController) Add(c *gin.Context) {
 	key := c.PostForm("key")
+
 	value := c.PostForm("value")
 
-	ctx := context.Background()
+	val, _ := c.Get("username")
+
+	ctx := context.WithValue(context.Background(), "username", val)
 
 	_, err := global.UseClient.Client.SAdd(ctx, key, value).Result()
 

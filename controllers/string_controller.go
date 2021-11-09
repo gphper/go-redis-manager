@@ -24,10 +24,15 @@ var Sc = stringController{}
 func (con *stringController) Ttl(c *gin.Context) {
 
 	ttl := c.PostForm("ttl")
+
 	key := c.PostForm("key")
-	ctx := context.Background()
+
+	val, _ := c.Get("username")
+
+	ctx := context.WithValue(context.Background(), "username", val)
 
 	ttlInt, _ := strconv.Atoi(ttl)
+
 	time := time.Duration(ttlInt) * time.Second
 
 	if ttlInt < 0 {
@@ -45,8 +50,12 @@ func (con *stringController) Ttl(c *gin.Context) {
 func (con *stringController) Save(c *gin.Context) {
 
 	key := c.PostForm("key")
+
 	content := c.PostForm("content")
-	ctx := context.Background()
+
+	val, _ := c.Get("username")
+
+	ctx := context.WithValue(context.Background(), "username", val)
 
 	_, err := global.UseClient.Client.Set(ctx, key, content, 0*time.Second).Result()
 

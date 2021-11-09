@@ -41,7 +41,9 @@ func AddServiceConf(conf model.ServiceConfigReq) (err error) {
 
 	client := redis.NewClient(optionConfig)
 
-	client.AddHook(comment.RedisLog{})
+	client.AddHook(comment.RedisLog{
+		Logger: comment.NewLogger(conf.ServiceName),
+	})
 
 	_, err = client.Ping(ctx).Result()
 	if err != nil {
@@ -83,9 +85,10 @@ func ServiceSwitch(conf model.ServiceSwitchReq) (err error) {
 	return nil
 }
 
-func SearchKeyType(conf model.RedisKeyReq) (keys []string, err error) {
+func SearchKeyType(conf model.RedisKeyReq, c *gin.Context) (keys []string, err error) {
 
-	ctx := context.Background()
+	val, _ := c.Get("username")
+	ctx := context.WithValue(context.Background(), "username", val)
 
 	if conf.SearchType == 1 {
 		//查询指定值
@@ -114,9 +117,7 @@ func SearchKeyType(conf model.RedisKeyReq) (keys []string, err error) {
 	return
 }
 
-func AddKey(req model.AddKeyReq) (err error) {
-
-	ctx := context.Background()
+func AddKey(req model.AddKeyReq, ctx context.Context) (err error) {
 
 	switch req.Type {
 	case "string":
@@ -150,8 +151,7 @@ func AddKey(req model.AddKeyReq) (err error) {
 	return
 }
 
-func DelKey(req model.DelKeyReq) (err error) {
-	ctx := context.Background()
+func DelKey(req model.DelKeyReq, ctx context.Context) (err error) {
 
 	if req.Type == "none" {
 
@@ -185,9 +185,7 @@ func DelKey(req model.DelKeyReq) (err error) {
 	return
 }
 
-func TransView(keyType string, keys string) (htmlString string, data gin.H) {
-
-	ctx := context.Background()
+func TransView(keyType string, keys string, ctx context.Context) (htmlString string, data gin.H) {
 
 	time, _ := global.UseClient.Client.TTL(ctx, keys).Result()
 

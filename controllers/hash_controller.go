@@ -23,8 +23,12 @@ var Hashc = hashController{}
 **/
 func (con *hashController) Del(c *gin.Context) {
 	key := c.PostForm("key")
+
 	member := c.PostForm("member")
-	ctx := context.Background()
+
+	val, _ := c.Get("username")
+
+	ctx := context.WithValue(context.Background(), "username", val)
 
 	res, _ := global.UseClient.Client.HDel(ctx, key, member).Result()
 
@@ -41,10 +45,14 @@ func (con *hashController) Del(c *gin.Context) {
 **/
 func (con *hashController) Add(c *gin.Context) {
 	key := c.PostForm("key")
+
 	field := c.PostForm("field")
+
 	value := c.PostForm("value")
 
-	ctx := context.Background()
+	val, _ := c.Get("username")
+
+	ctx := context.WithValue(context.Background(), "username", val)
 
 	_, err := global.UseClient.Client.HSet(ctx, key, field, value).Result()
 

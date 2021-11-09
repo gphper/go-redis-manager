@@ -24,10 +24,13 @@ var Lc = listController{}
 **/
 func (con *listController) Del(c *gin.Context) {
 	key := c.PostForm("key")
+
 	index := c.PostForm("index")
+
 	indexs, _ := strconv.Atoi(index)
 
-	ctx := context.Background()
+	val, _ := c.Get("username")
+	ctx := context.WithValue(context.Background(), "username", val)
 
 	_, err := global.UseClient.Client.LSet(ctx, key, int64(indexs), "listdel").Result()
 
@@ -46,9 +49,12 @@ func (con *listController) Del(c *gin.Context) {
 **/
 func (con *listController) Add(c *gin.Context) {
 	key := c.PostForm("key")
+
 	value := c.PostForm("value")
 
-	ctx := context.Background()
+	val, _ := c.Get("username")
+
+	ctx := context.WithValue(context.Background(), "username", val)
 
 	_, err := global.UseClient.Client.LPush(ctx, key, value).Result()
 

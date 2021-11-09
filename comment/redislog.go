@@ -7,21 +7,26 @@ package comment
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/go-redis/redis/v8"
+	"go.uber.org/zap"
 )
 
 type RedisLog struct {
-	Id int
+	Logger *zap.Logger
 }
 
 func (rl RedisLog) BeforeProcess(ctx context.Context, cmd redis.Cmder) (context.Context, error) {
-	return context.Background(), nil
+	return ctx, nil
 }
 
 func (rl RedisLog) AfterProcess(ctx context.Context, cmd redis.Cmder) error {
-	fmt.Println(cmd.String())
+	value, ok := ctx.Value("username").(string)
+
+	if ok {
+		rl.Logger.Info(cmd.String(), zap.String("username", value))
+	}
+
 	return nil
 }
 

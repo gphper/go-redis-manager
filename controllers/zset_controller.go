@@ -25,8 +25,12 @@ var Zsetc = zsetController{}
  */
 func (con *zsetController) Del(c *gin.Context) {
 	key := c.PostForm("key")
+
 	member := c.PostForm("member")
-	ctx := context.Background()
+
+	val, _ := c.Get("username")
+
+	ctx := context.WithValue(context.Background(), "username", val)
 
 	res, _ := global.UseClient.Client.ZRem(ctx, key, member).Result()
 
@@ -43,12 +47,16 @@ func (con *zsetController) Del(c *gin.Context) {
 **/
 func (con *zsetController) Add(c *gin.Context) {
 	key := c.PostForm("key")
+
 	value := c.PostForm("value")
+
 	score := c.PostForm("score")
 
 	scoreInt, _ := strconv.Atoi(score)
 
-	ctx := context.Background()
+	val, _ := c.Get("username")
+
+	ctx := context.WithValue(context.Background(), "username", val)
 
 	_, err := global.UseClient.Client.ZAdd(ctx, key, &redis.Z{
 		Score:  float64(scoreInt),
