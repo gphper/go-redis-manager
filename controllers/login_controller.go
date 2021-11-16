@@ -26,8 +26,7 @@ func (con *loginController) ShowLogin(c *gin.Context) {
 }
 
 func (con *loginController) Login(c *gin.Context) {
-	fmt.Println("hello")
-
+	
 	username := c.PostForm("account")
 	password := c.PostForm("password")
 
