@@ -7,9 +7,11 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"goredismanager/global"
 	"goredismanager/router"
 	"goredismanager/web"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -17,9 +19,20 @@ import (
 	"os/signal"
 	"runtime"
 	"time"
+
+	"github.com/gin-gonic/gin"
+)
+
+var (
+	release bool = true
 )
 
 func main() {
+
+	if release {
+		gin.SetMode(gin.ReleaseMode)
+		gin.DefaultWriter = ioutil.Discard
+	}
 
 	router := router.Init()
 
@@ -41,7 +54,9 @@ func main() {
 	go func() {
 		//windows 自动打开访问地址
 		if runtime.GOOS == "windows" {
-			cmd := exec.Command("cmd", "/c start http://"+srv.Addr+"/index")
+			url := "http://" + srv.Addr + "/index"
+			fmt.Println("访问地址：" + url)
+			cmd := exec.Command("cmd", "/c start "+url)
 			cmd.Start()
 		}
 	}()
