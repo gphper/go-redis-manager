@@ -24,8 +24,6 @@ func GetSSHClient(user, pass, addr string) (*ssh.Client, error) {
 		},
 	}
 
-	fmt.Println("world111111")
-	fmt.Println(addr)
 	sshConn, err := ssh.Dial("tcp", addr, config)
 	if nil != err {
 		fmt.Println(err)
