@@ -7,7 +7,6 @@ package controllers
 
 import (
 	"encoding/json"
-	"fmt"
 	"goredismanager/global"
 	"net/http"
 
@@ -26,7 +25,7 @@ func (con *loginController) ShowLogin(c *gin.Context) {
 }
 
 func (con *loginController) Login(c *gin.Context) {
-	
+
 	username := c.PostForm("account")
 	password := c.PostForm("password")
 

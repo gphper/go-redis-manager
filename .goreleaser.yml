@@ -10,6 +10,7 @@ builds:
       - windows
     flags:
       - -tags=release
+    main: ./  
 archives:
   - replacements:
       linux: Linux
