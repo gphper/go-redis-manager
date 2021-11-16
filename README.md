@@ -23,13 +23,12 @@ redis web客户端管理平台。优点：跨平台、部署简单。欢迎star�
 
 :white_check_mark:用户登录验证
 
-## 待实现功能
-
-:black_square_button:操作日志
+:white_check_mark:操作日志
 
 ## 使用文档
 - [开始使用](#开始使用)
 - [配置文件](#配置文件)
+- [用户验证](#用户验证)
 
 ### <a name="开始使用">开始使用</a>
 
@@ -76,4 +75,13 @@ accounts:
   password: "123456"
 ```
 
+### <a name="用户验证">用户验证</a>
+
+在配置文件中设置 accounts 属性即为默认开启用户验证
+```yaml
+#启用用户登录验证 不需要此功能则将 accounts 数据块注释掉即可
+accounts:
+- account: "admin"
+  password: "123456"
+```
 
