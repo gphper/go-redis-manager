@@ -59,6 +59,12 @@ func (con *indexController) SaveConfig(c *gin.Context) {
 func (con *indexController) SaveConfigFile(c *gin.Context) {
 
 	len := len(global.RedisServiceStorage)
+
+	if len == 0 {
+		con.Error(c, "当前没有有效的连接配置信息")
+		return
+	}
+
 	confs := make([]model.ServiceConfigReq, len)
 
 	i := 0
