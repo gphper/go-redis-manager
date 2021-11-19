@@ -109,7 +109,7 @@ $('.search_key').submit(function () {
               treeData = data.data;
               showTree("keys",data.data)
             } else {
-                layer.msg(data.data, {icon: 5, scrollbar: false, time: 2000, shade: [0.3, '#393D49']});
+                layer.msg(data.msg, {icon: 5, scrollbar: false, time: 2000, shade: [0.3, '#393D49']});
             }
         },
         error: function (jqXHR, textStatus, errorThrown) {
