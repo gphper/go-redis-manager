@@ -84,7 +84,7 @@
 
 
 <div class="row">
-  <div class="col-sm-5" style="padding-right: 0px;border-right: 3px solid rgb(217 217 217);">
+  <div id="left-sec" class="col-sm-5" style="padding-right: 0px;border-right: 3px solid rgb(217 217 217);">
     
     <form action="/switch" method="post" class="ajaxForm" autocomplete="off">
     <div class="col-sm-12" style="margin-top: 10px;">
@@ -164,7 +164,7 @@
     </div>
     
 
-    <div class="col-sm-12" style="margin-top: 15px;overflow-y: auto;height: 300px;">
+    <div id="tree" class="col-sm-12">
       <div id="main" class="demo-tree">
         <ul id="keys"></ul>
       </div>
@@ -414,5 +414,6 @@
       parent.document.getElementById('iframepage').style.height = height+'px';
   }
 
+  $("#tree").attr('style','height:'+($(document).height() - $("#tree").offset().top - 20)+'px;margin-top: 15px;overflow-y: auto;');
   </script>
 {{end}}
