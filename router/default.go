@@ -20,7 +20,7 @@ func Init() *gin.Engine {
 	router := gin.Default()
 
 	store := cookie.NewStore([]byte("goredismanagerphper"))
-	router.Use(gzip.Gzip(gzip.DefaultCompression), sessions.Sessions("goredismanager", store))
+	router.Use(middleware.StaticCache(), gzip.Gzip(gzip.DefaultCompression), sessions.Sessions("goredismanager", store))
 
 	router.GET("/login", controllers.LoginC.ShowLogin)
 	router.POST("/login", controllers.LoginC.Login)
