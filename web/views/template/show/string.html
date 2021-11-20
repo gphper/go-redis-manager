@@ -43,7 +43,7 @@
 
         <div class="col-sm-12" style="margin-top: 10px;">
             <div class="form-group">
-                <textarea name="content" style="resize:none;" class="form-control" id="exampleFormControlTextarea1" rows="3">{{.value}}</textarea>
+                <textarea name="content" class="form-control" id="exampleFormControlTextarea1">{{.value}}</textarea>
               </div>
         </div>
       </form>
@@ -118,4 +118,9 @@ $("#seeBtn").click(function(){
 	$("#json-renderer").jsonViewer(input, options);
 })
 </script>
+
+<script type="text/javascript">
+$("#exampleFormControlTextarea1").attr('style','height:'+($(window).height() - $("#exampleFormControlTextarea1").offset().top - 80)+'px;resize:none;');
+</script>
+
 {{end}}

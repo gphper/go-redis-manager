@@ -39,7 +39,7 @@
         新增元素
       </button>
     </div>
-    <div class="col-sm-12" style="overflow-y: auto;height: 500px;margin-top: 10px;">
+    <div id="show_sec" class="col-sm-12" style="overflow-y: auto;height: 500px;margin-top: 10px;">
       <table class="table">
         <thead class="thead-light">
           <tr>
@@ -138,5 +138,7 @@
 
 
 {{define "script"}}
-
+<script type="text/javascript">
+  $("#show_sec").attr('style','height:'+($(window).height() - $("#show_sec").offset().top - 60)+'px;margin-top: 15px;overflow-y: auto;');
+</script>
 {{end}}
