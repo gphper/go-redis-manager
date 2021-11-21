@@ -38,7 +38,7 @@
         <input type="hidden" name="key" value="{{.key}}">
         <div class="col-sm-12" style="margin-top: 10px;">
           <button type="submit" class="btn btn-primary">保存</button>
-          <button type="button" id="seeBtn" class="btn btn-primary">查看</button>
+          <button type="button" id="seeBtn" class="btn btn-primary">查看JSON格式</button>
         </div>
 
         <div class="col-sm-12" style="margin-top: 10px;">
@@ -109,13 +109,20 @@
 <script src="/statics/js/jquery.json-viewer.js"></script>
 <script type="text/javascript">
 $("#seeBtn").click(function(){
-  $("#showJson").modal("show");
+  
   var options = {
 		  collapsed: false,
 		  withQuotes: false
 	};
-  var input = eval('(' + $("#exampleFormControlTextarea1").val() + ')');
-	$("#json-renderer").jsonViewer(input, options);
+
+  try{
+    var input = eval('(' + $("#exampleFormControlTextarea1").val() + ')');
+  }catch(err){
+    layer.msg('json格式错误', {icon: 2, shade: 0.3, time: 2000});
+    return false;
+  }
+  $("#showJson").modal("show");
+  $("#json-renderer").jsonViewer(input, options);
 })
 </script>
 

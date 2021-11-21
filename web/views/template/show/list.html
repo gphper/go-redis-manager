@@ -61,7 +61,7 @@
               <form action="/list/del" method="post" class="ajaxForm" autocomplete="off">
                 <input type="hidden" name="key" value="{{$.key}}">
                 <input type="hidden" name="index" value="{{$i}}">
-                <button type="button" class="seeBtn btn btn-sm btn-primary">查看</button>
+                <button type="button" class="seeBtn btn btn-sm btn-primary">JSON格式</button>
                 <button type="submit" class="btn btn-sm btn-danger">删除</button>
               </form>
               
@@ -161,13 +161,20 @@
 <script src="/statics/js/jquery.json-viewer.js"></script>
 <script type="text/javascript">
 $(".seeBtn").click(function(){
-  $("#showJson").modal("show");
+ 
   var options = {
 		  collapsed: false,
 		  withQuotes: false
 	};
-  var input = eval('(' + $(this).parent().parent().parent().children("td")[1].textContent + ')');
-	$("#json-renderer").jsonViewer(input, options);
+
+  try{
+    var input = eval('(' + $(this).parent().parent().parent().children("td")[1].textContent + ')');
+	  $("#json-renderer").jsonViewer(input, options);
+  }catch(err){
+    layer.msg('json格式错误', {icon: 2, shade: 0.3, time: 2000});
+    return false;
+  }
+  $("#showJson").modal("show");
 })
 
 $("#show_sec").attr('style','height:'+($(window).height() - $("#show_sec").offset().top - 60)+'px;margin-top: 15px;overflow-y: auto;');
