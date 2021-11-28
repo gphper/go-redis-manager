@@ -44,8 +44,12 @@ function htmlParse(node,layer){
 }
 
 
-function showTree(id,data){
+function showTree(id,data,mod){
     html = htmlParse(data,0)
-    $("#"+id).html(html)
+    if(mod == "ADD"){
+        $("#"+id).html(html)
+    }else{
+        $("#"+id).append(html)
+    }
     loadHandleFunc()
 }

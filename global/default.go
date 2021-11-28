@@ -23,6 +23,7 @@ var HostName string
 var Port string
 var ConfigViper *viper.Viper
 var Accounts map[string]string
+var Limit int64
 
 var UseClient GlobalClient
 
@@ -69,6 +70,11 @@ func init() {
 	Port = ConfigViper.GetString("port")
 	if Port == "" {
 		Port = "8088"
+	}
+
+	Limit = ConfigViper.GetInt64("limit")
+	if Limit == 0 {
+		Limit = 100
 	}
 
 	connections := ConfigViper.Get("connections")

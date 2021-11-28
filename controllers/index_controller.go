@@ -115,10 +115,18 @@ func (con *indexController) Switch(c *gin.Context) {
 
 func (con *indexController) SearchKey(c *gin.Context) {
 
+	type ResultStruct struct {
+		Course      uint64
+		ResultSlice []comment.Node
+		Key         string
+	}
+
 	var (
 		err    error
 		req    model.RedisKeyReq
 		result []string
+		rs     ResultStruct
+		course uint64
 	)
 
 	err = con.FormBind(c, &req)
@@ -127,7 +135,7 @@ func (con *indexController) SearchKey(c *gin.Context) {
 		return
 	}
 
-	result, err = service.SearchKeyType(req, c)
+	result, course, err = service.SearchKeyType(req, c)
 
 	if err != nil {
 		con.AjaxReturn(c, AJAXFAIL, "Key值不存在")
@@ -144,8 +152,11 @@ func (con *indexController) SearchKey(c *gin.Context) {
 
 	}
 
-	resultSlice := comment.GetOne(gen.Root.Children, "")
-	con.AjaxReturn(c, AJAXSUCCESS, resultSlice)
+	rs.ResultSlice = comment.GetOne(gen.Root.Children, "")
+	rs.Course = course
+	rs.Key = req.SearchKey
+
+	con.AjaxReturn(c, AJAXSUCCESS, rs)
 }
 
 func (con *indexController) AddKey(c *gin.Context) {

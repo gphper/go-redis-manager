@@ -107,7 +107,14 @@ $('.search_key').submit(function () {
         success: function (data){
             if (data.status) {
               treeData = data.data;
-              showTree("keys",data.data)
+              showTree("keys",data.data.ResultSlice,'ADD')
+              if(data.data.Course){
+                //添加加载下一页功能
+                $("#page").html('<div course='+data.data.Course+' id="page-load">加载下一页数据</div>');
+                pageLoad(data.data.Key);
+              }else{
+                $("#page").html('')
+              }
             } else {
                 layer.msg(data.msg, {icon: 5, scrollbar: false, time: 2000, shade: [0.3, '#393D49']});
             }
@@ -123,7 +130,44 @@ $('.search_key').submit(function () {
     return false;
 });
 
+function pageLoad(key){
+  $("#page-load").click(function(){
+      console.log($(this).attr('course'));
 
+      $.ajax({
+        type: "POST",
+        url: "/search_key",
+        data: {'key':key,'type':2,'course':$(this).attr('course')},
+        dataType: 'json',
+        beforeSend: function () {
+            formloading = true;
+        },
+        success: function (data){
+            if (data.status) {
+              treeData = data.data;
+              showTree("keys",data.data.ResultSlice,'APPEND')
+              if(data.data.Course){
+                //添加加载下一页功能
+                $("#page").html('<div course='+data.data.Course+' id="page-load">加载下一页数据</div>');
+                pageLoad(data.data.Key);
+              }else{
+                $("#page").html('')
+              }
+            } else {
+                layer.msg(data.msg, {icon: 5, scrollbar: false, time: 2000, shade: [0.3, '#393D49']});
+            }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            
+        },
+        complete: function () {
+            formloading = false;
+            layer.close(loading);
+        }
+    });
+
+  })
+}
 
 $("#exampleFormControlSelect1").change(function(){
 if($(this).val() == "zset"){

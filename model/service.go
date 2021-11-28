@@ -22,6 +22,7 @@ type ServiceSwitchReq struct {
 type RedisKeyReq struct {
 	SearchKey  string `form:"key" label:"key值" json:"key" binding:"required"`
 	SearchType int    `form:"type" label:"搜索模式" json:"type" binding:"required"`
+	Course     uint64 `form:"course" label:"游标" json:"course"`
 }
 
 type AddKeyReq struct {

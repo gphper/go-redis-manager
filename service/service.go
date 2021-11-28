@@ -85,7 +85,7 @@ func ServiceSwitch(conf model.ServiceSwitchReq) (err error) {
 	return nil
 }
 
-func SearchKeyType(conf model.RedisKeyReq, c *gin.Context) (keys []string, err error) {
+func SearchKeyType(conf model.RedisKeyReq, c *gin.Context) (keys []string, cursor uint64, err error) {
 
 	val, _ := c.Get("username")
 	ctx := context.WithValue(context.Background(), "username", val)
@@ -98,21 +98,7 @@ func SearchKeyType(conf model.RedisKeyReq, c *gin.Context) (keys []string, err e
 		return
 	} else {
 		//模糊匹配
-		var cursor uint64
-		var tmpKeys []string
-
-		for {
-
-			tmpKeys, cursor, err = global.UseClient.Client.Scan(ctx, cursor, conf.SearchKey, 100).Result()
-
-			keys = append(keys, tmpKeys...)
-
-			if cursor == 0 {
-				break
-			}
-
-		}
-
+		keys, cursor, err = global.UseClient.Client.Scan(ctx, conf.Course, conf.SearchKey, global.Limit).Result()
 	}
 	return
 }

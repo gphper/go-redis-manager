@@ -44,6 +44,13 @@
   .text-show{
     width: 200px;
   }
+
+  #page-load{
+    height: 40px;
+    text-align: center;
+    cursor: pointer;
+    margin-top: 10px;
+  }
 </style>
 <link rel="stylesheet" href="/statics/bootstrap/css/bootstrap-icons.css" media="all">
 {{end}}
@@ -163,16 +170,12 @@
       <button data-toggle="modal" data-target="#addKeyModal" type="button" class="btn btn-light btn-sm">新建键值</button>
     </div>
     
-
     <div id="tree" class="col-sm-12">
       <div id="main" class="demo-tree">
         <ul id="keys"></ul>
+        <div id="page"></div>
       </div>
-      <!-- <ul class="list-group" id="main"></ul> -->
     </div>
-    
-
-
 
   </div>
   <div class="col-sm-7" style="padding-left: 0px;">
