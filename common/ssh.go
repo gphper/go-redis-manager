@@ -3,7 +3,7 @@
  * @Author: gphper
  * @Date: 2021-11-07 10:43:45
  */
-package comment
+package common
 
 import (
 	"fmt"

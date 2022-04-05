@@ -3,7 +3,7 @@
  * @Author: gphper
  * @Date: 2021-11-08 20:59:00
  */
-package comment
+package common
 
 import (
 	"go.uber.org/zap"

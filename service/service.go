@@ -8,7 +8,7 @@ package service
 import (
 	"context"
 	"encoding/json"
-	"goredismanager/comment"
+	"goredismanager/common"
 	"goredismanager/global"
 	"goredismanager/model"
 	"net"
@@ -30,7 +30,7 @@ func AddServiceConf(conf model.ServiceConfigReq) (err error) {
 
 	ctx := context.Background()
 	if conf.UseSsh == 1 {
-		cli, err = comment.GetSSHClient(conf.SSHConfig.SshUsername, conf.SSHConfig.SshPassword, conf.SSHConfig.SshHost+":"+conf.SSHConfig.SshPort)
+		cli, err = common.GetSSHClient(conf.SSHConfig.SshUsername, conf.SSHConfig.SshPassword, conf.SSHConfig.SshHost+":"+conf.SSHConfig.SshPort)
 		if nil != err {
 			return
 		}
@@ -41,8 +41,8 @@ func AddServiceConf(conf model.ServiceConfigReq) (err error) {
 
 	client := redis.NewClient(optionConfig)
 
-	client.AddHook(comment.RedisLog{
-		Logger: comment.NewLogger(conf.ServiceName),
+	client.AddHook(common.RedisLog{
+		Logger: common.NewLogger(conf.ServiceName),
 	})
 
 	_, err = client.Ping(ctx).Result()

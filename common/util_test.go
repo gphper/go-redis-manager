@@ -3,7 +3,7 @@
  * @Author: gphper
  * @Date: 2021-08-03 20:56:00
  */
-package comment
+package common
 
 import (
 	"testing"

@@ -8,7 +8,7 @@ package controllers
 
 import (
 	"errors"
-	"goredismanager/comment"
+	"goredismanager/common"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -47,7 +47,7 @@ func (Base *BaseController) AjaxReturn(c *gin.Context, code int, obj interface{}
 
 func (Base *BaseController) FormBind(c *gin.Context, obj interface{}) error {
 
-	trans, err := comment.InitTrans("zh")
+	trans, err := common.InitTrans("zh")
 
 	if err != nil {
 		return err

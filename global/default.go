@@ -8,7 +8,7 @@ package global
 import (
 	"context"
 	"flag"
-	"goredismanager/comment"
+	"goredismanager/common"
 	"goredismanager/model"
 	"net"
 	"path"
@@ -94,7 +94,7 @@ func init() {
 
 			if vv["usessh"] == 1 {
 				sshConfig := vv["sshconfig"].(map[interface{}]interface{})
-				cli, err := comment.GetSSHClient(sshConfig["sshusername"].(string), sshConfig["sshpassword"].(string), sshConfig["sshhost"].(string)+":"+sshConfig["sshport"].(string))
+				cli, err := common.GetSSHClient(sshConfig["sshusername"].(string), sshConfig["sshpassword"].(string), sshConfig["sshhost"].(string)+":"+sshConfig["sshport"].(string))
 				if nil != err {
 					panic(err)
 				}
@@ -105,8 +105,8 @@ func init() {
 
 			client := redis.NewClient(optionConfig)
 
-			client.AddHook(comment.RedisLog{
-				Logger: comment.NewLogger(vv["servicename"].(string)),
+			client.AddHook(common.RedisLog{
+				Logger: common.NewLogger(vv["servicename"].(string)),
 			})
 
 			_, err := client.Ping(context.Background()).Result()

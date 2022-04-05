@@ -10,7 +10,7 @@ import (
 	"net/http"
 	"strings"
 
-	"goredismanager/comment"
+	"goredismanager/common"
 	"goredismanager/global"
 	"goredismanager/model"
 	"goredismanager/service"
@@ -117,7 +117,7 @@ func (con *indexController) SearchKey(c *gin.Context) {
 
 	type ResultStruct struct {
 		Course      uint64
-		ResultSlice []comment.Node
+		ResultSlice []common.Node
 		Key         string
 	}
 
@@ -142,7 +142,7 @@ func (con *indexController) SearchKey(c *gin.Context) {
 		return
 	}
 
-	gen := comment.NewTrie()
+	gen := common.NewTrie()
 
 	for _, v := range result {
 
@@ -152,7 +152,7 @@ func (con *indexController) SearchKey(c *gin.Context) {
 
 	}
 
-	rs.ResultSlice = comment.GetOne(gen.Root.Children, "")
+	rs.ResultSlice = common.GetOne(gen.Root.Children, "")
 	rs.Course = course
 	rs.Key = req.SearchKey
 

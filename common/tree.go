@@ -3,7 +3,7 @@
  * @Author: gphper
  * @Date: 2021-09-23 21:07:01
  */
-package comment
+package common
 
 import "sort"
 
