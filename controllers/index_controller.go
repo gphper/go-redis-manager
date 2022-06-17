@@ -231,7 +231,12 @@ func (con *indexController) ShowKey(c *gin.Context) {
 
 	if err == nil {
 
-		htmlString, data := service.TransView(types, key, ctx)
+		htmlString, data, err := service.TransView(types, key, ctx)
+
+		if err != nil {
+			con.ErrorHtml(c, err)
+			return
+		}
 
 		c.HTML(http.StatusOK, htmlString, data)
 	}

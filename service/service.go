@@ -8,6 +8,7 @@ package service
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"goredismanager/common"
 	"goredismanager/global"
 	"goredismanager/model"
@@ -171,7 +172,13 @@ func DelKey(req model.DelKeyReq, ctx context.Context) (err error) {
 	return
 }
 
-func TransView(keyType string, keys string, ctx context.Context) (htmlString string, data gin.H) {
+func TransView(keyType string, keys string, ctx context.Context) (string, gin.H, error) {
+
+	var (
+		err        error
+		htmlString string
+		data       gin.H
+	)
 
 	time, _ := global.UseClient.Client.TTL(ctx, keys).Result()
 
@@ -226,6 +233,10 @@ func TransView(keyType string, keys string, ctx context.Context) (htmlString str
 			"result": res,
 			"time":   time.Seconds(),
 		}
+
+	default:
+		err = errors.New("暂不支持该类型数据展示")
 	}
-	return
+
+	return htmlString, data, err
 }

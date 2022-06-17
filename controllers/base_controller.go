@@ -45,6 +45,15 @@ func (Base *BaseController) AjaxReturn(c *gin.Context, code int, obj interface{}
 	})
 }
 
+func (Base BaseController) ErrorHtml(c *gin.Context, err error) {
+
+	c.HTML(http.StatusOK, "toast/error.html", gin.H{
+		"title": "ERROR",
+		"msg":   err.Error(),
+	})
+
+}
+
 func (Base *BaseController) FormBind(c *gin.Context, obj interface{}) error {
 
 	trans, err := common.InitTrans("zh")
