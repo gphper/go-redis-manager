@@ -2,7 +2,7 @@
 
 redis web客户端管理平台。优点：跨平台、部署简单。欢迎star！！
 
-## 该项目暂停维护，新版本请移步[go-redis-manager（Vue版）](https://github.com/gphper/grm)
+## 该项目暂停维护，新版本请移步[go-redis-manager（go+vue版）](https://github.com/gphper/grm)
 
 ## 功能清单
 
